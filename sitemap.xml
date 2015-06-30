@@ -73,6 +73,12 @@
      <changefreq>daily</changefreq>
     </url>
         
+    <url>
+     <loc>http://www.backbee.com//developper-documentation/components/classcontent/</loc>
+     <lastmod>2015-06-30</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
     
 
 </urlset>
