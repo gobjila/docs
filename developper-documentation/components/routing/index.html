@@ -6,10 +6,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         
-        <link rel="canonical" href="http://www.backbee.com/developper-documentation/components/config/">
+        <link rel="canonical" href="http://www.backbee.com/developper-documentation/components/routing/">
         <link rel="shortcut icon" href="../../../img/favicon.ico">
 
-	<title>Config - The BackBee documentation</title>
+	<title>Routing - The BackBee documentation</title>
 
         <link href="../../../css/bootstrap-3.0.3.min.css" rel="stylesheet">
         <link href="../../../css/font-awesome-4.0.3.css" rel="stylesheet">
@@ -110,16 +110,16 @@
                             <a href="../classcontent/">ClassContent</a>
                         </li>
                     
-                        <li class="active">
-                            <a href="./">Config</a>
+                        <li >
+                            <a href="../config/">Config</a>
                         </li>
                     
                         <li >
                             <a href="../event_listener/">Event Listener</a>
                         </li>
                     
-                        <li >
-                            <a href="../routing/">Routing</a>
+                        <li class="active">
+                            <a href="./">Routing</a>
                         </li>
                     
                         <li >
@@ -135,12 +135,12 @@
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
                 <li >
-                    <a rel="next" href="../classcontent/">
+                    <a rel="next" href="../event_listener/">
                         <i class="fa fa-arrow-left"></i> Previous
                     </a>
                 </li>
                 <li >
-                    <a rel="prev" href="../event_listener/">
+                    <a rel="prev" href="../security/">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -165,15 +165,11 @@
     
         <li class="main active"><a href="#components">Components</a></li>
         
-            <li><a href="#the-config-component">The Config component</a></li>
+            <li><a href="#the-routing-component">The Routing component</a></li>
         
-            <li><a href="#how-the-config-component-work">How the Config component work ?</a></li>
+            <li><a href="#how-the-routing-component-work">How the Routing component work ?</a></li>
         
-            <li><a href="#yaml-parsing-filtering-and-extending">YAML parsing, filtering and extending</a></li>
-        
-            <li><a href="#configuration-persisting">Configuration persisting</a></li>
-        
-            <li><a href="#configuration-caching">Configuration caching</a></li>
+            <li><a href="#routing-component-requirements">Routing component requirements</a></li>
         
     
     </ul>
@@ -181,142 +177,56 @@
             <div class="col-md-9" role="main">
 
 <h1 id="components">Components</h1>
-<h2 id="the-config-component">The Config component</h2>
-<p>This component is used in BackBee to set parameters from YAML files into the Container.</p>
-<h2 id="how-the-config-component-work">How the Config component work ?</h2>
-<p>The BackBee Config Component provide a <code>Config</code> object able to:</p>
+<h2 id="the-routing-component">The Routing component</h2>
+<p>This component is used in BackBee to map an HTTP request to a set of configuration variables.
+Note this component is an extension of <a href="http://symfony.com/doc/current/components/routing/introduction.html">Symfony Routing Component</a>, so the official documentation is
+still valid.</p>
+<h2 id="how-the-routing-component-work">How the Routing component work ?</h2>
+<p>To set a basing routing system, you need at least to set and configure three objects:</p>
 <ul>
-<li>Parse YAML files from a directory;</li>
-<li>Persist this configuration in file or in database;</li>
-<li>Set this configuration in <code>BackBee Container</code>;</li>
-<li>Save and load configuration from <code>BackBee Cache</code>;</li>
+<li>A <code>BackBee\Routing\RouteCollection</code> instance, which contains routes definitions (instance of <code>BackBee\Routing\Route</code>);</li>
+<li>A <code>BackBee\Routing\RequestContext</code> instance, which embed the current request;</li>
+<li>Finaly, a <code>RequestMatcher</code> instance, in charge of performs the mapping from request to a Route.</li>
 </ul>
-<pre><code class="php">&lt;?php
-
-use BackBee\Cache\AbstractCache;
-use BackBee\Config\Config;
-use BackBee\DependencyInjection\Container;
-use BackBee\DependencyInjection\DispatchTagEventInterface;
-use BackBee\DependencyInjection\Dumper\DumpableServiceInterface;
-
-class Config implements DispatchTagEventInterface, DumpableServiceInterface
-{
-    public function __construct(
-        $basedir,
-        AbstractCache $cache = null,
-        Container $container = null,
-        $debug = false,
-        array $yml_to_ignore = []
-    ){/*..*/}
-}
-
-?&gt;
+<p>In BackBee CMS, all routes are declared in <code>BackBee/Config/route.yml</code> file, but obviously you can create your own routes in Standard
+Edition if you have frameworks needs outside the "CMS" context (backend bundles for instance).</p>
+<p>The <code>route.yml</code> is parsed by the Yaml component and BackBee create a <code>RouteCollection</code> instance, which is stored in Container as the
+<code>routing</code> service (Symfony developpers should notice this behavior is a little bit different to the Symfony <code>router</code> service which is not available in BackBee).</p>
+<p>In this file, you can find all the routes (and so on, paths) from the actual REST API used to communicate with the Javascript client when you are logged to BackBee Standard Edition.</p>
+<p>Also, some routes are defined to handle some resources and finaly the more important route is the default route.</p>
+<p>Let's take an example:</p>
+<pre><code class="yaml"># Access all media
+bb.media.list:
+  pattern: /rest/{version}/medialist
+  defaults:
+    _action: medialistAction
+    _controller: BackBee\Rest\Controller\MediaController # can be a service definition
+  requirements:
+    _method: GET
 </code></pre>
 
-<p><em>This component is not related and not compatible with Symfony Config component.</em></p>
-<h2 id="yaml-parsing-filtering-and-extending">YAML parsing, filtering and extending</h2>
-<p>The BackBee Config Component can take a valid directory as argument, and merge the configuration according to the data set
-in this YAML files. If you don't know YAML, you can take a look to the <a href="http://symfony.com/doc/current/components/yaml/yaml_format.html">Symfony YAML format documentation</a>.</p>
-<p>Moreover, BackBee Config component allow you to ignore some files.</p>
-<pre><code class="php">&lt;?php
-
-use BackBee\Config\Config;
-
-class Foo
-{
-    const DIRECTORY = '/my-valid/path';
-
-    public function returnConfiguration(array $filesToIgnore)
-    {
-        return new Config(self::DIRECTORY, null, null, false, $filesToIgnore);
-    }
-}
-
-?&gt;
+<p>A <code>BackBee\Route</code> is defined by a pattern (mostly an url path) where we can use variables, have some mandatory defaults
+(binded to a Controller and an action) and may have some requirements.</p>
+<h2 id="routing-component-requirements">Routing component requirements</h2>
+<p>The <code>requirements</code> property allow use to add requirements used by the <code>RequestMatcher</code> to map an url to a request.</p>
+<p>This is an example of some available requirements:</p>
+<pre><code class="yaml"># this route is very difficult to match
+route.name:
+  pattern: /route/{a}/{b}/{c}/difficult
+  defaults:
+    _action: fooAction
+    _controller: Baz\BarController
+  requirements:
+    a: .+ # accept regex conditions
+    b: \d+
+    _method:POST
+    condition: &quot;context.getMethod() in ['GET', 'HEAD'] and request.headers.get('User-Agent') matches '/firefox/i'&quot; # use the Symfony Expression Language component
 </code></pre>
 
-<p>This way, the ignored files won't be parsed.</p>
-<p>Thanks to the <em>BackBee environments</em>, you can also extend and improve your default configuration.
-For instance, let's say you want to add a specific configuration when your are in "testing" environment.</p>
-<p>You can set the environment this way:</p>
-<pre><code class="php">&lt;?php
-
-use BackBee\Config\Config;
-
-class Foo
-{
-    const DIRECTORY = '/my-valid/path';
-
-    public function TestingConfiguration()
-    {
-        $config = new Config('/repository/Config', null, null, false, []);
-
-        return $config-&gt;setEnvironment('testing');
-
-        /**
-         * Now the object is able to parse YAML files from theses directories:
-         * /repository/Config
-         * /repository/Config/testing
-         * and we are also able to parse specific &quot;environment files&quot;:
-         * /repository/Config/foo.testing.yml
-         */
-    }
-}
-
-?&gt;
-</code></pre>
-
-<p>This is simple and powerful, you can be very specific on the configuration you want to use.
-Configurations keys and parameters are merged recursively, starting from base directory to the environnement directory.
-Thank to the "On cascade system", you can also add a new directory to allow an override of the current configuration.</p>
-<pre><code class="php">&lt;?php
-
-use BackBee\Config\Config;
-
-class Foo
-{
-    const DIRECTORY = '/my-valid/path';
-
-    public function overrideTestingConfiguration(Config $config, $directory)
-    {
-        return $config-&gt;extend($directory);
-
-        /**
-         * Now the object is able to parse YAML files from theses directories:
-         * /repository/Config/&lt;$directory&gt;
-         * If a key is declared in &lt;$directory&gt; configuration files, the configuration is overriden
-         */
-    }
-}
-
-?&gt;
-</code></pre>
-
-<h2 id="configuration-persisting">Configuration persisting</h2>
-<p>The BackBee Config Component can persist configurations in file or in database, you can also create your owns "persistors"
-thanks to the <code>BackBee\Config\PersistorInterface</code>.</p>
-<p>For now, two persistors are provided in BackBee CMS:</p>
-<ul>
-<li>the <strong>File</strong> Persistor allow you to write and override the main configuration file (config.yml)</li>
-<li>the <strong>Registry</strong> Persistor is a simple database Key/Value system</li>
-</ul>
-<p>If we take a look to the BackBee CMS configuration:</p>
-<pre><code class="yaml">config:
-    save_in_registry: true # default value: true
-    persistor: [BackBee\Config\Persistor\File, BackBee\Config\Persistor\Registry]
-</code></pre>
-
-<ul>
-<li><code>save_in_registry</code> is a particular option: if true, this means BackBee will try to look for an overidden configuration
-  stored in Registry.</li>
-<li><code>persistor</code> is the list of activated persistor, BackBee will loop on each and try to find configuration. If no one
-  provide the requested configuration, an exception will be throw.</li>
-</ul>
-<h2 id="configuration-caching">Configuration caching</h2>
-<p>The BackBee Config Component is fully compatible with BackBee Cache component.</p>
-<p>When you create your Config object, you can pass an instance of <code>BackBee\Cache\AbstractCache</code> as a second argument.
-This way, in non-debug mode (fourth argument, <strong>false</strong> by default), the second time you get the information, the configuration
-will be constructed from cache instead of built again from files or database registry.</p></div>
+<p>The <code>condition</code> requirement can use the Symfony Expression Language component and have access to:
+<em> <code>context</code>: the instance of RequestContext;
+</em> <code>request</code>: the instance of the actual Request;</p>
+<p>If you are interested by this component, you can take a look to the official <a href="http://symfony.com/doc/current/components/expression_language/index.html">Expression Language</a> documentation.</p></div>
         </div>
 
 	<footer class="col-md-12">
