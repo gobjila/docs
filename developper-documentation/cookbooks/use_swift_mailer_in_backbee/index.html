@@ -6,10 +6,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         
-        <link rel="canonical" href="http://www.backbee.com/developper-documentation/cookbooks/create_new_commands/">
+        <link rel="canonical" href="http://www.backbee.com/developper-documentation/cookbooks/use_swift_mailer_in_backbee/">
         <link rel="shortcut icon" href="../../../img/favicon.ico">
 
-	<title>Create new commands - The BackBee documentation</title>
+	<title>Use Swift Mailer in BackBee - The BackBee documentation</title>
 
         <link href="../../../css/bootstrap-3.0.3.min.css" rel="stylesheet">
         <link href="../../../css/font-awesome-4.0.3.css" rel="stylesheet">
@@ -85,16 +85,16 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Cookbooks <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                     
-                        <li class="active">
-                            <a href="./">Create new commands</a>
+                        <li >
+                            <a href="../create_new_commands/">Create new commands</a>
                         </li>
                     
                         <li >
                             <a href="../customize_error_pages/">Customize error pages</a>
                         </li>
                     
-                        <li >
-                            <a href="../use_swift_mailer_in_backbee/">Use Swift Mailer in BackBee</a>
+                        <li class="active">
+                            <a href="./">Use Swift Mailer in BackBee</a>
                         </li>
                     
                     </ul>
@@ -131,12 +131,12 @@
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
                 <li >
-                    <a rel="next" href="../../configuration/">
+                    <a rel="next" href="../customize_error_pages/">
                         <i class="fa fa-arrow-left"></i> Previous
                     </a>
                 </li>
                 <li >
-                    <a rel="prev" href="../customize_error_pages/">
+                    <a rel="prev" href="../../components/config/">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -161,7 +161,9 @@
     
         <li class="main active"><a href="#cookbooks">CookBooks</a></li>
         
-            <li><a href="#create-new-commands">Create new commands</a></li>
+            <li><a href="#use-swiftmailer-in-backbee">Use Swiftmailer in BackBee</a></li>
+        
+            <li><a href="#configuration">Configuration</a></li>
         
     
     </ul>
@@ -169,68 +171,88 @@
             <div class="col-md-9" role="main">
 
 <h1 id="cookbooks">CookBooks</h1>
-<h2 id="create-new-commands">Create new commands</h2>
-<p>The Console page of the Components section covers how to create a console application.
-This cookbook article covers the creation of a command using BackBee Standard Edition.</p>
-<h3 id="automatically-registering-commands">Automatically Registering Commands</h3>
-<p>To make the console commands available automatically with BackBee, create a
-<code>Command</code> directory inside your bundle and create a PHP file suffixed with
-<code>Command.php</code> for each command that you want to provide. For example, if you
-want to extend the DemoBundle to welcome you from the command line, create
-<code>WelcomeCommand.php</code> and add the following to it:</p>
-<pre><code class="php">// bundle/WelcomeBundle/Command/WelcomeCommand.php
-namespace WelcomeBundle\Command;
+<h2 id="use-swiftmailer-in-backbee">Use Swiftmailer in BackBee</h2>
+<h3 id="introduction">Introduction</h3>
+<p>In BackBee there isn't an dedicated component for mailing, we actually use Swift Mailer library. BackBee provide only a way to configure it and easily get initialized instance.</p>
+<h2 id="configuration">Configuration</h2>
+<p>To configure Swift Mailer in BackBee you need to create mailer.yml into your global configuration folder <code>repository/Config</code>.</p>
+<p>The minimal configuration file is compose of an smtp and port</p>
+<pre><code class="yml">smtp: localhost
+port: 25
+</code></pre>
 
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
+<p>But in production generally we need to use an secured smtp, for that more configuration parameters is requiered.</p>
+<pre><code class="yml">smtp: localhost
+port: 587
+username: mailer_user_identifier
+password: superSecretPassword
+</code></pre>
 
+<p>Them it's all for the configuration part.</p>
+<h3 id="basic-usage-example">Basic usage example</h3>
+<p>To retrieve the configured mailer you need an access to your Application, this on can be new, but for performances matter prefer use the current Application.
+The example will be place in the context of an EventListener. This in not good practice to place your business logic into an EventListener but it is more easy to understand.</p>
+<pre><code class="php">&lt;?php
+namespace BackBee\Bundle\DocumentationBundle\Listener;
 
-use BackBee\Console\AbstractCommand;
+use BackBee\Event\Event;
+use BackBee\Site\Site;
 
-class WelcomeCommand extends AbstractCommand
+class MailerListener
 {
-    protected function configure()
+    public static function onSomethingNeedToBeMailed(Event $event)
     {
-        $this
-            -&gt;setName('demo:welcome')
-            -&gt;setDescription('Welcome someone')
-            -&gt;addArgument(
-                'name',
-                InputArgument::OPTIONAL,
-                'Who do you want to welcome?'
-            )
-            -&gt;addOption(
-                'yell',
-                null,
-                InputOption::VALUE_NONE,
-                'If set, the message will yell in uppercase letters'
-            )
-            -&gt;setHelp(&lt;&lt;&lt;EOF
-The &lt;info&gt;%command.name%&lt;/info&gt; command can welcome someone.
-With the option ``yell``, the message will be displayed in uppercase letters.
-EOF;
-            )
-        ;
+        // retrieve your current Application
+        $application = $event-&gt;getDispatcher()-&gt;getApplication();
+
+        // retrieve other informations
+        $site = $application-&gt;getSite();
+
+        if ($site instanceof Site) {
+            // render e-mail body by using partial method from the renderer
+            $body = $application-&gt;getRenderer()-&gt;partial(
+                'Email/Email.twig',
+                [
+                    'site_name' =&gt; $site-&gt;getLabel(),
+                    'home_link' =&gt; $site-&gt;getServerName(),
+                ]
+            );
+
+            // Build the message
+            $message = static::buildMessage(
+                $body,
+                $application-&gt;getSite(),
+            );
+
+            // now get the configured mailer by passing by application and send your message
+            $application-&gt;getMailer()-&gt;send($message);
+        }
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
-    { 
-        $text = 'Welcome '.$input-&gt;getArgument('name');
+    /**
+     * E-mail message creation
+     */
+    public static function buildMessage($body, $site)
+    {
+        $from = 'administrator@' . $site-&gt;getServerName();
 
-        if ($input-&gt;getOption('yell')) {
-            $text = strtoupper($text);
-        }
+        // Create Swift_Message
+        $message = \Swift_Message::newInstance();
+        // Set the From address
+        $message-&gt;addFrom($from, $site-&gt;getLabel());
+        // Set the To addresses
+        $message-&gt;addTo($from, $site-&gt;getLabel());
+        // Give the message a subject
+        $message-&gt;setSubject('Something append on ' . $site-&gt;getLabel());
+        // Give it the body
+        $message-&gt;setBody($body, 'text/html', 'UTF-8');
 
-        $output-&gt;writeln($text);
+        return $message;
     }
 }
 </code></pre>
 
-<p>This command will now automatically be available to run:</p>
-<pre><code class="bash">    $ ./backbee demo:welcome Charles
-</code></pre></div>
+<p>If you want do more stuff with Swift Mailer, you can find an complete doc on <a href="http://swiftmailer.org/">Swift Mailer web site</a></p></div>
         </div>
 
 	<footer class="col-md-12">
