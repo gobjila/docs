@@ -6,10 +6,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         
-        <link rel="canonical" href="http://www.backbee.com/developper-documentation/cookbooks/create_new_commands/">
+        <link rel="canonical" href="http://www.backbee.com/developper-documentation/cookbooks/ease_debugging_with_profiler/">
         <link rel="shortcut icon" href="../../../img/favicon.ico">
 
-	<title>Create new commands - The BackBee documentation</title>
+	<title>Ease debugging with the Web Profiler - The BackBee documentation</title>
 
         <link href="../../../css/bootstrap-3.0.3.min.css" rel="stylesheet">
         <link href="../../../css/font-awesome-4.0.3.css" rel="stylesheet">
@@ -89,16 +89,16 @@
                             <a href="../create_bundle_administration/">Create bundle administration</a>
                         </li>
                     
-                        <li class="active">
-                            <a href="./">Create new commands</a>
+                        <li >
+                            <a href="../create_new_commands/">Create new commands</a>
                         </li>
                     
                         <li >
                             <a href="../customize_error_pages/">Customize error pages</a>
                         </li>
                     
-                        <li >
-                            <a href="../ease_debugging_with_profiler/">Ease debugging with the Web Profiler</a>
+                        <li class="active">
+                            <a href="./">Ease debugging with the Web Profiler</a>
                         </li>
                     
                         <li >
@@ -147,12 +147,12 @@
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
                 <li >
-                    <a rel="next" href="../create_bundle_administration/">
+                    <a rel="next" href="../customize_error_pages/">
                         <i class="fa fa-arrow-left"></i> Previous
                     </a>
                 </li>
                 <li >
-                    <a rel="prev" href="../customize_error_pages/">
+                    <a rel="prev" href="../use_swift_mailer_in_backbee/">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -177,7 +177,15 @@
     
         <li class="main active"><a href="#cookbooks">CookBooks</a></li>
         
-            <li><a href="#create-new-commands">Create new commands</a></li>
+            <li><a href="#ease-debugging-with-profiler">Ease debugging with Profiler</a></li>
+        
+            <li><a href="#the-configuration-panel">The Configuration panel</a></li>
+        
+            <li><a href="#the-request-panel">The Request panel</a></li>
+        
+            <li><a href="#the-routing-panel">The Routing panel</a></li>
+        
+            <li><a href="#the-database-panel">The Database panel</a></li>
         
     
     </ul>
@@ -185,68 +193,66 @@
             <div class="col-md-9" role="main">
 
 <h1 id="cookbooks">CookBooks</h1>
-<h2 id="create-new-commands">Create new commands</h2>
-<p>The Console page of the Components section covers how to create a console application.
-This cookbook article covers the creation of a command using BackBee Standard Edition.</p>
-<h3 id="automatically-registering-commands">Automatically Registering Commands</h3>
-<p>To make the console commands available automatically with BackBee, create a
-<code>Command</code> directory inside your bundle and create a PHP file suffixed with
-<code>Command.php</code> for each command that you want to provide. For example, if you
-want to extend the DemoBundle to welcome you from the command line, create
-<code>WelcomeCommand.php</code> and add the following to it:</p>
-<pre><code class="php">// bundle/WelcomeBundle/Command/WelcomeCommand.php
-namespace WelcomeBundle\Command;
-
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
-
-
-use BackBee\Console\AbstractCommand;
-
-class WelcomeCommand extends AbstractCommand
-{
-    protected function configure()
-    {
-        $this
-            -&gt;setName('demo:welcome')
-            -&gt;setDescription('Welcome someone')
-            -&gt;addArgument(
-                'name',
-                InputArgument::OPTIONAL,
-                'Who do you want to welcome?'
-            )
-            -&gt;addOption(
-                'yell',
-                null,
-                InputOption::VALUE_NONE,
-                'If set, the message will yell in uppercase letters'
-            )
-            -&gt;setHelp(&lt;&lt;&lt;EOF
-The &lt;info&gt;%command.name%&lt;/info&gt; command can welcome someone.
-With the option ``yell``, the message will be displayed in uppercase letters.
-EOF;
-            )
-        ;
-    }
-
-    protected function execute(InputInterface $input, OutputInterface $output)
-    { 
-        $text = 'Welcome '.$input-&gt;getArgument('name');
-
-        if ($input-&gt;getOption('yell')) {
-            $text = strtoupper($text);
-        }
-
-        $output-&gt;writeln($text);
-    }
-}
-</code></pre>
-
-<p>This command will now automatically be available to run:</p>
-<pre><code class="bash">    $ ./backbee demo:welcome Charles
-</code></pre></div>
+<h2 id="ease-debugging-with-profiler">Ease debugging with Profiler</h2>
+<p>In BackBee, in addition to the Symfony Debug which display a <strong>better</strong> exception page with more informations, we have
+access to a Profiler which collect a lot of interesting data to help developper understand what is going on.</p>
+<p>This article cookbook covers the documentation of actual panels from BackBee Profiler.</p>
+<p>The BackBee Profiler is a toolbar available at the bottom of the page when you are in "development" mode.</p>
+<p><img alt="The BackBee Developper debug toolbar" src="http://i.imgur.com/2ukjUwd.png" /></p>
+<p>From left to right, you access to useful informations:
+<em> the <code>BackBee CMS</code> version and the <code>BackBee CMS</code> application name;
+</em> the code status of the page and the action used to render the page;
+<em> the number of logs generated when render this page;
+</em> the memory used to render the page (in Mo);
+* the number of database requests and the time spent to execute them.</p>
+<h2 id="the-configuration-panel">The <strong>Configuration</strong> panel</h2>
+<p>When you click on <code>BackBee CMS</code> version or application name, you access the <strong>Configuration panel</strong>.</p>
+<p>In this panel, informations from BackBee configuration are displayed:</p>
+<h3 id="project-configuration">Project configuration</h3>
+<p>In this section, the version of BackBee CMS used, the application name and the environment are displayed.</p>
+<h3 id="php-configuration">PHP configuration</h3>
+<p>In this section, the version of PHP used is displayed and informations about cache extensions.
+Also, click on "phpinfo" will give you full informations about your PHP configuration.</p>
+<h3 id="actives-bundle">Actives Bundle</h3>
+<p>In this section are listed all activated bundles (i.e exactly the same results as bundles registered in <code>bundles.yml</code> file).</p>
+<h2 id="the-request-panel">The <strong>Request</strong> panel</h2>
+<p>When you click on status code or in the action used to render page, you open the <strong>Request panel</strong>.</p>
+<p>In this panel, all informations from server and from Symfony Request object are displayed to help you understand the
+informations used to render your page.</p>
+<p>All the informations from PHP super globals related to the Request are displayed.</p>
+<ul>
+<li><em>GET</em> and <em>POST</em> parameters;</li>
+<li>Request attributes from BackBee:<ul>
+<li><code>_action</code>: the action used to render the page;</li>
+<li><code>_controller</code>: the controller called to render the page;</li>
+<li><code>_route</code>: the route matched by the uri;</li>
+<li><code>uri</code>: if not controller was found, return "<em>root</em>" which means the BackBee <code>FrontController</code> is used.</li>
+</ul>
+</li>
+<li>Request cookies;</li>
+<li>Request headers (also availables in debug toolbar from any web browser)</li>
+<li>Request content</li>
+<li>Request Server parameters:</li>
+<li>Response headers;</li>
+</ul>
+<p>But also, the <code>Session</code> informations and the <a href="http://symfony.com/doc/current/components/http_foundation/sessions.html#flash-messages"><code>flashes</code></a> messages</p>
+<h2 id="the-routing-panel">The <strong>Routing</strong> panel</h2>
+<p>When you click on "Routing", you open the <strong>Request panel</strong>.</p>
+<p>In addition to the <code>debug:routing</code> command available in <code>DebugBundle</code>, the Routing panel provides a global overview of actual routes
+registered in the application.</p>
+<p>Routes are ordered by name, schema and patterns. For each route, the panel list the Controller/action couple called when the route is accessed.</p>
+<blockquote>
+<p>This is a good way to discover the REST API.</p>
+</blockquote>
+<h2 id="the-database-panel">The <strong>Database</strong> panel</h2>
+<p>When you click on the database icon or in the database informations, you open the <strong>Database panel</strong>.</p>
+<h3 id="queries-section">Queries section</h3>
+<p>This panel list all Doctrine requests used to render the page with the spending time and the runnable query.
+This is useful when you want to optimize SQL queries or want to understand why you have a Doctrine error with a <code>QueryBuilder</code>.</p>
+<h3 id="doctrine-orm-mapping-section">Doctrine ORM mapping section</h3>
+<p>If you create your own entities and want to use Doctrine 2 to save in database, you need set up theses PHP classes.
+This section display all actual classes managed by Doctrine 2 and if the mapping is correctly set up,
+else an explicit message is displayed to help you fix the mapping.</p></div>
         </div>
 
 	<footer class="col-md-12">
