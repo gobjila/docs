@@ -186,7 +186,7 @@
 Note this component is an extension of <a href="http://symfony.com/doc/current/components/routing/introduction.html">Symfony Routing Component</a>, so the official documentation is
 still valid.</p>
 <h2 id="how-the-routing-component-work">How the Routing component work ?</h2>
-<p>To set a basing routing system, you need at least to set and configure three objects:</p>
+<p>To set a basic routing system, you need at least to set and configure three objects:</p>
 <ul>
 <li>A <code>BackBee\Routing\RouteCollection</code> instance, which contains routes definitions (instance of <code>BackBee\Routing\Route</code>);</li>
 <li>A <code>BackBee\Routing\RequestContext</code> instance, which embed the current request;</li>
@@ -197,7 +197,7 @@ Edition if you have frameworks needs outside the "CMS" context (backend bundles 
 <p>The <code>route.yml</code> is parsed by the Yaml component and BackBee create a <code>RouteCollection</code> instance, which is stored in Container as the
 <code>routing</code> service (Symfony developpers should notice this behavior is a little bit different to the Symfony <code>router</code> service which is not available in BackBee).</p>
 <p>In this file, you can find all the routes (and so on, paths) from the actual REST API used to communicate with the Javascript client when you are logged to BackBee Standard Edition.</p>
-<p>Also, some routes are defined to handle some resources and finaly the more important route is the default route.</p>
+<p>Also, some routes are defined to handle some resources and finaly the most important route is the default route.</p>
 <p>Let's take an example:</p>
 <pre><code class="yaml"># Access all media
 bb.media.list:
@@ -230,7 +230,7 @@ route.name:
 <p>The <code>condition</code> requirement can use the Symfony Expression Language component and have access to:
 <em> <code>context</code>: the instance of RequestContext;
 </em> <code>request</code>: the instance of the actual Request;</p>
-<p>If you are interested by this component, you can take a look to the official <a href="http://symfony.com/doc/current/components/expression_language/index.html">Expression Language</a> documentation.</p></div>
+<p>If you are interested in this component, you can take a look to the official <a href="http://symfony.com/doc/current/components/expression_language/index.html">Expression Language</a> documentation.</p></div>
         </div>
 
 	<footer class="col-md-12">

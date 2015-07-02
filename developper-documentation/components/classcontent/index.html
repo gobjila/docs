@@ -183,7 +183,7 @@
 <h1 id="components">Components</h1>
 <h2 id="the-classcontent-component">The ClassContent component</h2>
 <h2 id="classcontent-parameters">ClassContent Parameters</h2>
-<p>Parameters allow to configure your content easily, he is used usually in the listener but can be used everywhere. Parameters is contributed on front by the user with the gearing button of block.</p>
+<p>Parameters allow to configure contents. ClassContent parameters is used usually in the listener but can be used everywhere. ClassContent parameters are contributed in back office by the user with the gearing button of Block.</p>
 <p>Parameters is builded from the block's YAML like</p>
 <pre><code class="yaml">BlockDemo:
     properties:
@@ -209,13 +209,13 @@
 </code></pre>
 
 <h3 id="use-parameters">Use parameters</h3>
-<p>If parameters is not validated by user the content parameters is overrided by revision parameters.
+<p>If ClassContent Parameters are not validated by user the content parameters are overriden by revision parameters.
 <strong>Only value of the parameter is saved.</strong></p>
-<p>For get default parameters:</p>
+<p>To get default parameters:</p>
 <pre><code class="php">&lt;?php
 $params = $content-&gt;getDefaultParams();
 
-/** That return all parameters with definitions and default values:
+/** That returns all parameters with definitions and default values:
  *  array (size=2)
  *    'mytext' =&gt;
  *      array (size=3)
@@ -236,12 +236,12 @@ $params = $content-&gt;getDefaultParams();
  */
 </code></pre>
 
-<p>For get all parameters :</p>
+<p>To get all parameters :</p>
 <pre><code class="php">&lt;?php
 
 $params = $content-&gt;getAllParams();
 
-/** That return all parameters with definitions and new values
+/** That returns all parameters with definitions and new values
  *  array (size=2)
  *    'mytext' =&gt;
  *      array (size=3)
@@ -262,11 +262,11 @@ $params = $content-&gt;getAllParams();
  */
 </code></pre>
 
-<p>For get one param:</p>
+<p>To get one param:</p>
 <pre><code class="php">&lt;?php
 $param = $content-&gt;getParam('mytext');
 
-/** That return the definition and new value
+/** That returns the definition and new value
  *  array (size=3)
  *    'label' =&gt; string 'My text' (length=7)
  *    'type' =&gt; string 'text' (length=4)
@@ -274,19 +274,19 @@ $param = $content-&gt;getParam('mytext');
  */
 </code></pre>
 
-<p>For get the value of the param:</p>
+<p>To get the value of the param:</p>
 <pre><code class="php">&lt;?php
 $paramValue = $content-&gt;getParamValue('mytext');
 
-// That return the new value string '' (length=0)
+// That returns the new value string '' (length=0)
 </code></pre>
 
-<p>For set a value, you need to set a same type which you declare in YAML file as value:</p>
+<p>To set a value, you need to set up the same type you declare in the YAML file as value:</p>
 <pre><code class="php">&lt;?php
 $content-&gt;setParam('mytext', 'foo');
 $param = $content-&gt;getParamValue('mytext')
 
-// That return a new value set  string 'foo' (length=3)
+// That returns a new value set  string 'foo' (length=3)
 </code></pre>
 
 <h2 id="parameters-reference">Parameters reference</h2>
@@ -319,14 +319,14 @@ $param = $content-&gt;getParamValue('mytext')
 <tr>
 <td><strong>label</strong></td>
 <td>String</td>
-<td>Label is display above the field</td>
+<td>Label is displayed above the field</td>
 <td>Empty</td>
 <td>No</td>
 </tr>
 <tr>
 <td><strong>value</strong></td>
 <td>Mixed</td>
-<td>This field must be set and allow to describe type of the  parameter</td>
+<td>This field must be set and allows to describe the  parameter's type</td>
 <td>None</td>
 <td>Yes</td>
 </tr>
@@ -393,7 +393,7 @@ $param = $content-&gt;getParamValue('mycheckbox'); // sarray('foo')
 
 <hr />
 <h4 id="datetime-picker">Datetime picker</h4>
-<p>Element text with a datetimepicker</p>
+<p>Text element with a datetimepicker</p>
 <table>
 <thead>
 <tr>
@@ -422,7 +422,7 @@ $param = $content-&gt;getParamValue('mycheckbox'); // sarray('foo')
 </code></pre>
 
 <pre><code class="php">&lt;?php
-$param = $content-&gt;getParamValue('mydatetimepicker'); //return 1435573740
+$param = $content-&gt;getParamValue('mydatetimepicker'); // 1435573740
 </code></pre>
 
 <hr />
@@ -461,7 +461,7 @@ $param = $content-&gt;getParamValue('myhidden'); // foo
 
 <hr />
 <h4 id="link-selector">Link selector</h4>
-<p>Link selector allow to choose a link from tree page or external link.</p>
+<p>Link selector allows to choose a link from one of your website pages or an external link.</p>
 <table>
 <thead>
 <tr>
@@ -496,12 +496,12 @@ $param = $content-&gt;getParamValue('mylinkselector');
 </code></pre>
 
 <p><strong> Page tree </strong>:
-We recommend to retrieve the url from the page entity instead of the url attribute cause the url can change.</p>
+We recommend to retrieve the url from the page entity instead of the url attribute because the url can change.</p>
 <p><strong> External link </strong> :
 In this case, note the pageUid attribute is (obviously) null.</p>
 <hr />
 <h4 id="media-selector">Media selector</h4>
-<p>Media selector allow to choose a list of media from the media library.</p>
+<p>Media selector allow to choose a list of media in the media library.</p>
 <table>
 <thead>
 <tr>
@@ -537,7 +537,7 @@ $param = $content-&gt;getParamValue('mymediaselector');
 
 <hr />
 <h4 id="node-selector">Node selector</h4>
-<p>Node selector allow to choose a page from tree</p>
+<p>Node selector allows to choose a page from tree</p>
 <table>
 <thead>
 <tr>
@@ -565,12 +565,12 @@ $param = $content-&gt;getParamValue('mymediaselector');
         value: []
 </code></pre>
 
-<pre><code class="php"># Example with select one node
+<pre><code class="php"># Example of node selection
 $param = $content-&gt;getParamValue('mynodeselector');
 # array('pageUid' =&gt; 'anPageUid', 'title' =&gt; 'Foo')
 </code></pre>
 
-<p>We recommend to retrieve the title from the page entity instead of the title attribute cause the title can change.</p>
+<p>We recommend to retrieve the title from the page entity instead of the title attribute because the title can change.</p>
 <hr />
 <h4 id="password">Password</h4>
 <p>Like HTML password attribute</p>
@@ -688,7 +688,7 @@ $param = $content-&gt;getParamValue('myradio'); // array('foo')
 <tr>
 <td><strong>multiple</strong></td>
 <td>Boolean</td>
-<td>Allow to multiple selection</td>
+<td>Allows multiple selection</td>
 <td>false</td>
 <td>No</td>
 </tr>
@@ -788,7 +788,7 @@ $param = $content-&gt;getParamValue('mytextearea'); // BackBee
 <hr />
 <h3 id="special-parameters">Special parameters</h3>
 <h4 id="rendermode">Rendermode</h4>
-<p>Rendermode parameters allow to list automatically rendermodes of the content and use it directly.</p>
+<p>Rendermode parameters allow to list automatically rendermodes of the content and use them directly.</p>
 <table>
 <thead>
 <tr>

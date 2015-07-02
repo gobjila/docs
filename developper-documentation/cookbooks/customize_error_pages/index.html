@@ -178,24 +178,24 @@
 
 <h1 id="cookbooks">CookBooks</h1>
 <h2 id="customize-error-pages">Customize error pages</h2>
-<p>In BackBee, thanks to Symfony Debug component all errors are treated as exceptions: pages not found or access unauthorized,
-each error is triggered by throwing an exception in your code.</p>
-<p>Also, if your are in "Developper Mode" BackBee will catch and display a <strong>better</strong> exception page with a lot of informations
-to help you discover the issue:</p>
+<p>In BackBee, thanks to Symfony Debug component all errors are treated as exceptions: pages not found or access unauthorized.
+Each error is triggered by throwing an exception in your code.</p>
+<p>In "Developper Mode" BackBee will catch and display a <strong>better</strong> exception page with a lot of informations
+to help you understand the issue:</p>
 <p><img alt="The BackBee Developper exception displayer" src="http://i.imgur.com/GwvS1qE.png" /></p>
 <p>In production, your visitors will see the nice error page provided by BackBee:</p>
 <p><img alt="The BackBee Production exception displayer" src="http://i.imgur.com/tml7ozz.png" /></p>
-<p>Error pages for the production environment can be customized in two ways depending on your needs:</p>
+<p>Error pages can be customized in two different ways depending on your needs:</p>
 <ul>
 <li>If you just want to design the contents and styles of the error pages, you can set your own error templates</li>
 <li>If you need total control of exception handling to execute your own logic, create your own ExceptionListener on <code>kernel.exception</code> event.</li>
 </ul>
 <h3 id="use-your-own-default-templates">Use your own default templates</h3>
-<p>When the error page loads, an internal ExceptionListener is used to render a Twig template to show the user.</p>
+<p>When the error page loads, an internal ExceptionListener is used to render a Twig template to show template to the user.</p>
 <p>This ExceptionListener uses the HTTP status code, the <code>debug</code> parameter and the following logic to determine the template filename:</p>
-<p>BackBee provide core templates which are located into <code>vendor/backbee/BackBee/Resources/layouts/error</code>.
-If the template for the status code doesn't exist, this is the default template which is used instead.</p>
-<p>In BackBee Standard edition, theses templates are already overriden in the <strong>ToolbarBundle</strong>, theses templates are located
+<p>BackBee provides core templates which are located into <code>vendor/backbee/BackBee/Resources/layouts/error</code>.
+If the template for the code status doesn't exist, the default template which be used instead.</p>
+<p>In BackBee Standard edition, theses templates are already overriden in the <strong>ToolbarBundle</strong>. Theses templates are located
 into <code>vendor/backbee/toolbar-bundle/Resources/layouts/error</code> folder.</p>
 <p>If you want to override theses templates, your application might look like this:</p>
 <pre><code>repository/
@@ -207,7 +207,8 @@ into <code>vendor/backbee/toolbar-bundle/Resources/layouts/error</code> folder.<
                 default.phtml
 </code></pre>
 
-<p>In case you need them, the ExceptionController passes some information to the error template via the error variable which act as the original PHP exception so you can access the HTTP status code and exception message.</p></div>
+<p>In case you need them, the ExceptionController passes informations to the error template via the error variable.
+It acts as the original PHP exception so you can access the HTTP status code and exception message.</p></div>
         </div>
 
 	<footer class="col-md-12">

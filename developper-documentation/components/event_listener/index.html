@@ -192,14 +192,14 @@
 <h2 id="the-event-listener-component">The Event Listener component</h2>
 <p><em>Events</em> are a common and effective way to tie together loosely coupled components in an application.
 An event is generally used to broadcast a change that has occured during a process. If a <code>component</code> is
-interested in a particular event, he can <em>listen</em> to it. When this particular event is triggered, a <code>method</code>,
+interested in a particular event, it can <em>listen</em> to it. When this particular event is triggered, a <code>method</code>,
 often called <em>callback</em> or <em>handler</em> is executed. Events are convenient ways to share
 data between components.
 In <code>BackBee</code>, events are triggered by an <em>EventDispatcher</em> and an <em>EventListener</em> is used to listen to them.</p>
 <h2 id="event">Event</h2>
 <p><code>Namespace: BackBee\Event\Event</code></p>
 <p>The Backbee event class extend <code>sfEvent</code> and allows us to create a generic <code>Event</code> object.
-An generic event object has two properties: <code>target</code> and <code>args</code>;
+A generic event object has two properties: <code>target</code> and <code>args</code>;
 The target property represents the target of the event. The <code>args</code> is an optional associated map.
 When the <code>args</code> property is provided, it's sent to the listeners.
 Custom Event can be created by extending the class <code>BackBee\Event\Event</code>.</p>
@@ -210,12 +210,12 @@ $myHelloEvent = new Event($target, array(&quot;message&quot;=&gt;&quot;Hello Bac
 
 <h2 id="event-listener">Event Listener</h2>
 <p><code>Namespace: BackBee\Event\EventListener</code></p>
-<p>To listen to an event we must use the <code>addListener</code> method of the <code>EventDispatcher</code>.
+<p>To listen to an event you must use the <code>addListener</code> method of the <code>EventDispatcher</code>.
 <code>addListener</code> takes three parameters. The first one is the name of the event that will be triggered, the second is an array whose first element
 is a class path and the second is a method. The last parameter is the priority of the event. Listener with higher priority will be triggered first.</p>
 <pre><code>$this-&gt;application-&gt;getEventDispatcher()-&gt;addListener("loading.event", array("BackBee/Event/Listener/HelloListener", "sayHello"));
 </code></pre>
-<p>Here we register the listener <em>HelloListener</em> to be executed when the event <code>loading.event</code> is occured.</p>
+<p>Here, we register the listener <em>HelloListener</em> to be executed when the event <code>loading.event</code> is occured.</p>
 <pre><code class="php">    &lt;?php
 
         namespace BackBee\Event\Listener;
@@ -256,8 +256,8 @@ the static <code>sayHello</code> method of the <code>Backbee/Event/Listener/Hell
 content is defined in a <code>.yml</code> file. Content creation and content rendering go
 through many phases that <code>Backbee</code> exposes with events. By instance, an event is triggered
 when a content is created, before and after a content has been saved, when the rendering process
-is started, while the content is been rendered, after the renderer process and so on. these events
-allow us the alter in different ways the contents lifecycle or the rendering process itself.</p>
+is started, while the content is been rendered, after the renderer process and so on. These events
+allow us the act in different ways on the contents lifecycle and rendering process itself.</p>
 <p>ClassContent events are similar to custom events. But, as they take place when the main application
 is dealing with a request, a common way to listen to them is to use an <code>event.yml</code> config file.
 Will try to local event file in the <code>repository/Config</code> folder. Bellow is an example of how to
@@ -282,13 +282,12 @@ was rendered.
 <code>*.render</code>  and <code>*.prerender</code> are events triggered by the <code>Renderer</code> object. Bellow is the list of
 all the Renderer events.</p>
 <ul>
-<li><code>*.prerender</code></li>
-<li><code>*.render</code></li>
-<li><code>*.postrender</code></li>
+<li><code>*.prerender</code> : is triggered <em>before</em> the content is being rendered;</li>
+<li><code>*.render</code> : when the content is about to be rendered;</li>
+<li><code>*.postrender</code> : after the render process.</li>
 </ul>
-<p><em>prerender</em> is triggered <em>before</em> the content is been rendered. <em>render</em> when the
- content is about to be rendered and <em>postrender</em> after the render process. How ever There is no strong difference <em>render</em> and <em>postrender</em>.</p>
-<p>As in BackBee all the contents are <code>Doctrine</code> entities, these doctrine events are also available for all the contents.</p>
+<p>However there is no strong difference between <em>render</em> and <em>postrender</em>.</p>
+<p>In BackBee all the contents are <code>Doctrine</code> entities. These doctrine events are also available for all the contents.</p>
 <ul>
 <li><code>preremove</code></li>
 <li><code>postremove</code></li>
@@ -301,8 +300,8 @@ all the Renderer events.</p>
 <li><code>onflush</code></li>
 </ul>
 <h2 id="classcontent-listener">ClassContent Listener</h2>
-<p>To listen to a ClassContentEvent we have to create a <code>Listener</code> class. By default Backbee
-will looks for Listener in the repository/Config/Listener folder.</p>
+<p>To listen to a ClassContentEvent we have to create a <code>Listener</code> class. By default BackBee
+will look for Listener in the repository/Config/Listener folder.</p>
 <pre><code class="php">    &lt;?php
         namespace BackBee\Event\Listener,
         use BackBee\Event\Event;
@@ -322,7 +321,7 @@ will looks for Listener in the repository/Config/Listener folder.</p>
                 /* The article classcontent */
                 $content = $renderer-&gt;getObject();
 
-                /*Add a new parameter that will be available in the content template*/
+                /* Add a new parameter that will be available in the content template */
                 $renderer-&gt;assign('myParams', &quot;my Param value&quot;);
             }
         }
@@ -330,9 +329,8 @@ will looks for Listener in the repository/Config/Listener folder.</p>
 </code></pre>
 
 <h2 id="event-inheritance">Event inheritance</h2>
-<p>The last feature we will cover is ClassContent event inheritance. In <code>BackBee</code>
-content can be inherited from one another. The <code>EventDispatcher</code> respects this inheritance.
-If a event is triggered for a subContent it will also be triggered for its parent. So <em>class content</em> Events bubble up in BackBee.</p></div>
+<p>In <code>BackBee</code> content can be inherited from one another. The <code>EventDispatcher</code> respects this inheritance.
+If an event is triggered for a subContent it will also be triggered for its parents. So <em>class content</em> Events bubbles up in BackBee.</p></div>
         </div>
 
 	<footer class="col-md-12">

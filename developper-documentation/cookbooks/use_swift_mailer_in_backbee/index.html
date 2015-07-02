@@ -181,25 +181,26 @@
 <h1 id="cookbooks">CookBooks</h1>
 <h2 id="use-swiftmailer-in-backbee">Use Swiftmailer in BackBee</h2>
 <h3 id="introduction">Introduction</h3>
-<p>In BackBee there isn't an dedicated component for mailing, we actually use Swift Mailer library. BackBee provide only a way to configure it and easily get initialized instance.</p>
+<p>In BackBee there is no home made component for mailing. We actually use Swift Mailer library.
+BackBee only provides a way to configure it and get your instance initialized easily.</p>
 <h2 id="configuration">Configuration</h2>
 <p>To configure Swift Mailer in BackBee you need to create mailer.yml into your global configuration folder <code>repository/Config</code>.</p>
-<p>The minimal configuration file is compose of an smtp and port</p>
+<p>The minimal configuration file is composed of an SMTP and  a port</p>
 <pre><code class="yml">smtp: localhost
 port: 25
 </code></pre>
 
-<p>But in production generally we need to use an secured smtp, for that more configuration parameters is requiered.</p>
+<p>You can also set up more parameters for more security on SMTP.</p>
 <pre><code class="yml">smtp: localhost
 port: 587
 username: mailer_user_identifier
 password: superSecretPassword
 </code></pre>
 
-<p>Them it's all for the configuration part.</p>
 <h3 id="basic-usage-example">Basic usage example</h3>
-<p>To retrieve the configured mailer you need an access to your Application, this on can be new, but for performances matter prefer use the current Application.
-The example will be place in the context of an EventListener. This in not good practice to place your business logic into an EventListener but it is more easy to understand.</p>
+<p>To retrieve the configured mailer you need an access to your Application.
+You can start with a new app, but for performances matters prefer use the current Application.
+The example will be placed in the context of an EventListener. <em>This is not a good practice to place your business logic into an EventListener</em> but it is easier to understand.</p>
 <pre><code class="php">&lt;?php
 namespace BackBee\Bundle\DocumentationBundle\Listener;
 
@@ -260,7 +261,7 @@ class MailerListener
 }
 </code></pre>
 
-<p>If you want do more stuff with Swift Mailer, you can find an complete doc on <a href="http://swiftmailer.org/">Swift Mailer web site</a></p></div>
+<p>If you want do more with Swift Mailer, you can find additional documentation on <a href="http://swiftmailer.org/">Swift Mailer web site</a></p></div>
         </div>
 
 	<footer class="col-md-12">

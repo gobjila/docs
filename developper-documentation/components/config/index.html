@@ -188,7 +188,7 @@
 <h2 id="the-config-component">The Config component</h2>
 <p>This component is used in BackBee to set parameters from YAML files into the Container.</p>
 <h2 id="how-the-config-component-work">How the Config component work ?</h2>
-<p>The BackBee Config Component provide a <code>Config</code> object able to:</p>
+<p>The BackBee Config Component provides a <code>Config</code> object able to:</p>
 <ul>
 <li>Parse YAML files from a directory;</li>
 <li>Persist this configuration in file or in database;</li>
@@ -221,7 +221,7 @@ class Config implements DispatchTagEventInterface, DumpableServiceInterface
 <h2 id="yaml-parsing-filtering-and-extending">YAML parsing, filtering and extending</h2>
 <p>The BackBee Config Component can take a valid directory as argument, and merge the configuration according to the data set
 in this YAML files. If you don't know YAML, you can take a look to the <a href="http://symfony.com/doc/current/components/yaml/yaml_format.html">Symfony YAML format documentation</a>.</p>
-<p>Moreover, BackBee Config component allow you to ignore some files.</p>
+<p>Moreover, BackBee Config component allows you to ignore some files.</p>
 <pre><code class="php">&lt;?php
 
 use BackBee\Config\Config;
@@ -241,7 +241,7 @@ class Foo
 
 <p>This way, the ignored files won't be parsed.</p>
 <p>Thanks to the <em>BackBee environments</em>, you can also extend and improve your default configuration.
-For instance, let's say you want to add a specific configuration when your are in "testing" environment.</p>
+For instance, let's say you want to add a specific configuration when your are in a "testing" environment.</p>
 <p>You can set the environment this way:</p>
 <pre><code class="php">&lt;?php
 
@@ -297,14 +297,14 @@ class Foo
 </code></pre>
 
 <h2 id="configuration-persisting">Configuration persisting</h2>
-<p>The BackBee Config Component can persist configurations in file or in database, you can also create your owns "persistors"
+<p>The BackBee Config Component can persist configurations in file or in database, you can also create your own "persistors"
 thanks to the <code>BackBee\Config\PersistorInterface</code>.</p>
 <p>For now, two persistors are provided in BackBee CMS:</p>
 <ul>
-<li>the <strong>File</strong> Persistor allow you to write and override the main configuration file (config.yml)</li>
+<li>the <strong>File</strong> Persistor allows you to write and override the main configuration file (config.yml)</li>
 <li>the <strong>Registry</strong> Persistor is a simple database Key/Value system</li>
 </ul>
-<p>If we take a look to the BackBee CMS configuration:</p>
+<p>If we take a look at the BackBee CMS configuration:</p>
 <pre><code class="yaml">config:
     save_in_registry: true # default value: true
     persistor: [BackBee\Config\Persistor\File, BackBee\Config\Persistor\Registry]
@@ -313,8 +313,8 @@ thanks to the <code>BackBee\Config\PersistorInterface</code>.</p>
 <ul>
 <li><code>save_in_registry</code> is a particular option: if true, this means BackBee will try to look for an overidden configuration
   stored in Registry.</li>
-<li><code>persistor</code> is the list of activated persistor, BackBee will loop on each and try to find configuration. If no one
-  provide the requested configuration, an exception will be throw.</li>
+<li><code>persistor</code> is the list of activated persistors. BackBee will loop on each and try to find configuration. If no one
+  provides the requested configuration, an exception will be thrown.</li>
 </ul>
 <h2 id="configuration-caching">Configuration caching</h2>
 <p>The BackBee Config Component is fully compatible with BackBee Cache component.</p>

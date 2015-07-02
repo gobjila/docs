@@ -191,26 +191,26 @@
 <p><code>BackBee</code> Security component is based on the Security Component of <code>Symfony</code>.</p>
 <p>It provides a robust way to secure a web application. Here we will present some of the core concepts of this component : <code>firewall</code>, <code>FirewallMap</code>, <code>authentication</code> , <code>authorization</code>, <code>DecissionAccess</code>,  <code>Voter</code>, <code>SecurityContext</code>.</p>
 <h2 id="overview-of-security-mechanism">Overview of security mechanism</h2>
-<p>The main propose of the security component is to deal with <em>authentication</em> and <em>authorization</em>.</p>
+<p>The main purpose of the security component is to deal with <em>authentication</em> and <em>authorization</em>.</p>
 <p>Authentication is a way to grant access to a ressource. When a user is successfully authentified, authorization is a way to control access to a specific ressource.</p>
-<p>Authentication is handled by what is called a <em>firewall</em>. A application can have many secured areas, an admin area by instance.</p>
+<p>Authentication is handled by what is called a <em>firewall</em>. An application can have many secured areas, an admin area for instance.</p>
 <p>A secured area is determined by an <em>url</em>. When an url that is part of a secured area is requested, behind the hook some registered callbacks are executed.</p>
 <p>The <code>Firewall</code> archives this by listening to the <code>symfony</code> <code>kernel.request</code> event triggered by the HttpKernel.
-A <code>FirewallMap</code>  that maps a <code>request</code> with the registered listeners then checks if the current request is under a secured area or is already secured.</p>
-<p>A <code>FirewallMap</code> Listener can authenticate a request, throws an <code>AuthenticationException</code> or do nothing. If one of these listener throws an exception meaning that the request is not authentificated, this exception can either be transformed into an <code>AccessDeniedHttpException</code> or used to initiate an authentication process by calling the <code>Firewall</code> entry point.</p>
+A <code>FirewallMap</code> maps a <code>request</code> with the registered listeners then checks if the current request is under a secured area or is already secured.</p>
+<p>A <code>FirewallMap</code> Listener can authenticate a request, throws an <code>AuthenticationException</code> or do nothing. If one of these listeners throw an exception (meaning that the request is not authentificated), this exception can either be transformed into an <code>AccessDeniedHttpException</code> or used to initiate an authentication process by calling the <code>Firewall</code> entry point.</p>
 <h2 id="authentication">Authentication</h2>
 <p>A firewall entry point, as it implements the <code>authenticationEntryPointInterface</code>, must provided a <code>start</code> method which takes two parameters: a request and the exception previously raised.</p>
-<p><code>start</code> must returns a <code>Response</code> object that can be a page showing a form by instance.
-If one the FirewallMap Listener can handle the request, it creates a <code>Token</code> object that holds a reference to the current user, his role and his credentials.
+<p><code>start</code> must return a <code>Response</code> object that can be a page showing a form for instance.
+If one of the <code>FirewallMap</code> Listener can handle the request, it creates a <code>Token</code> object that holds a reference to the current user, its roles and its credentials.
 The listener then uses an <code>authenticationProviderManager</code> object to authenticate the <code>Token</code>. <code>authenticationProviderManager</code> will authenticate the token if provided and return an <em>authenticated</em> one if the user credential is valid.</p>
 <p>Otherwise an <code>AuthenticationException</code> is raised.
-Each <em>Token</em> uses a specific type of <em>authenticationProvider</em>. An <em>authenticationProvider</em> must implements the <code>authenticationProviderInterface</code> and provides the two methods :  <code>authentificate</code> which takes one paramater that must implements the <code>TokenInterface</code> and <code>supports</code> which is used to check rather or not the given <code>token</code> is supported by the authentication provider .</p>
+Each <em>Token</em> uses a specific type of <em>authenticationProvider</em>. An <em>authenticationProvider</em> must implements the <code>authenticationProviderInterface</code> and provides the two methods :  <code>authentificate</code> which takes one paramater that must implements the <code>TokenInterface</code> and <code>supports</code> which is used to check whether or not the given <code>token</code> is supported by the authentication provider .</p>
 <p>Registered FirewallMap Listeners must implement the <code>ListenerInterface</code> thus provided an <code>handle</code> method that accept an <code>GetRequestEvent</code> object.</p>
 <h2 id="authorization">Authorization</h2>
-<p>Once a user is identified his roles or any other attributes or object of its <code>token</code> can be used to determine rather or not he has access to a resource.</p>
+<p>Once a user is identified his roles or any other attributes or object of its <code>token</code> can be used to determine whether or not he has access to a resource.</p>
 <h3 id="decision-manager">Decision manager</h3>
-<p>An <code>AccessControlManager</code> is used for making final access decisions based on <code>Voter</code>.</p>
-<p>A voter can decide to <code>vote</code> either for grant or deny access to a ressource. A voter can also abstrain itself.</p>
+<p>An <code>AccessControlManager</code> is used to make final access decisions based on <code>Voter</code>.</p>
+<p>A voter can decide to <code>vote</code> either for grant or deny access to a ressource. A voter can also abstain itself.</p>
 <p>By default The <code>AccessControllerManagers</code> make his decision according to one these three strategies:</p>
 <ul>
 <li><strong>affirmative</strong> (Access is granted if any voter votes for granting access)</li>
@@ -233,15 +233,16 @@ Each <em>Token</em> uses a specific type of <em>authenticationProvider</em>. An 
 <li>VoterInterface::ACCESS_DENIED</li>
 </ul>
 <p>Bellow is list of Voter used in BackBee
-- AccessVoter
-- BBAclVoter
-- BBRoleVoter
-- SudoVoter</p>
+<em> AccessVoter
+</em> BBAclVoter
+<em> BBRoleVoter
+</em> SudoVoter</p>
 <h2 id="backbee-securitycontext-and-the-contextinterface">BackBee SecurityContext and the ContextInterface</h2>
 <p>All the process of creating <code>Firewall</code>, <code>FirewallMap</code>, <code>AuthenticationManager</code>, <code>AccessDecisionMananger</code> and listeners is handled by the <code>BackBee\Security\SecurityContext</code> object.</p>
-<p>However to way of dealing with security Listerners is simplyfied by using a <code>Context</code> object.
+<p>However the way of dealing with security Listerners is simplyfied by using a <code>Context</code> object.
 A security <code>Context</code> extends the abstract class <code>BackBee\Security\Context\BBAuthContext</code> and defines the <strong>loadListeners</strong> method.</p>
-<p><code>LoadListeners</code> accepts one parameter which is the security config that can be setted is <code>repository/Config/security.yml</code>. A context can be used to instanciate new listener or to register new authentication provider to the <code>SecuriryContext</code>.</p>
+<p><code>LoadListeners</code> accepts one parameter which is the security config that can be setted in <code>repository/Config/security.yml</code>.
+A context can be used to instanciate new listener or to register new authentication provider to the <code>SecuriryContext</code>.</p>
 <p>Bellow we show all the  security contexts provided by BackBee.</p>
 <ul>
 <li>AnonymousContext</li>
@@ -280,7 +281,7 @@ A security <code>Context</code> extends the abstract class <code>BackBee\Securit
 <li><strong>Token</strong>: <code>BackBee\Security\Token\BBUserToken</code></li>
 </ul>
 <h4 id="statelesscontext">StatelessContext</h4>
-<p>In stateless mode authentication is asked for every requests. <code>StatelessContext</code> handles sessions
+<p>In stateless mode, authentication is asked for every requests. <code>StatelessContext</code> handles sessions
 creation every time stateless mode is disabled.</p>
 <ul>
 <li><strong>authentication provider</strong>: <code>none</code></li>
