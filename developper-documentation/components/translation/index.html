@@ -6,10 +6,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         
-        <link rel="canonical" href="http://www.backbee.com/developper-documentation/components/config/">
+        <link rel="canonical" href="http://www.backbee.com/developper-documentation/components/translation/">
         <link rel="shortcut icon" href="../../../img/favicon.ico">
 
-	<title>Config - The BackBee documentation</title>
+	<title>Translation - The BackBee documentation</title>
 
         <link href="../../../css/bootstrap-3.0.3.min.css" rel="stylesheet">
         <link href="../../../css/font-awesome-4.0.3.css" rel="stylesheet">
@@ -114,8 +114,8 @@
                             <a href="../classcontent/">ClassContent</a>
                         </li>
                     
-                        <li class="active">
-                            <a href="./">Config</a>
+                        <li >
+                            <a href="../config/">Config</a>
                         </li>
                     
                         <li >
@@ -130,8 +130,8 @@
                             <a href="../security/">Security</a>
                         </li>
                     
-                        <li >
-                            <a href="../translation/">Translation</a>
+                        <li class="active">
+                            <a href="./">Translation</a>
                         </li>
                     
                     </ul>
@@ -143,12 +143,12 @@
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
                 <li >
-                    <a rel="next" href="../classcontent/">
+                    <a rel="next" href="../security/">
                         <i class="fa fa-arrow-left"></i> Previous
                     </a>
                 </li>
-                <li >
-                    <a rel="prev" href="../event_listener/">
+                <li class="disabled">
+                    <a rel="prev" >
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -173,15 +173,7 @@
     
         <li class="main active"><a href="#components">Components</a></li>
         
-            <li><a href="#the-config-component">The Config component</a></li>
-        
-            <li><a href="#how-the-config-component-work">How the Config component work ?</a></li>
-        
-            <li><a href="#yaml-parsing-filtering-and-extending">YAML parsing, filtering and extending</a></li>
-        
-            <li><a href="#configuration-persisting">Configuration persisting</a></li>
-        
-            <li><a href="#configuration-caching">Configuration caching</a></li>
+            <li><a href="#the-translation-component">The Translation component</a></li>
         
     
     </ul>
@@ -189,142 +181,53 @@
             <div class="col-md-9" role="main">
 
 <h1 id="components">Components</h1>
-<h2 id="the-config-component">The Config component</h2>
-<p>This component is used in BackBee to set parameters from YAML files into the Container.</p>
-<h2 id="how-the-config-component-work">How the Config component work ?</h2>
-<p>The BackBee Config Component provides a <code>Config</code> object able to:</p>
-<ul>
-<li>Parse YAML files from a directory;</li>
-<li>Persist this configuration in file or in database;</li>
-<li>Set this configuration in <code>BackBee Container</code>;</li>
-<li>Save and load configuration from <code>BackBee Cache</code>;</li>
-</ul>
-<pre><code class="php">&lt;?php
-
-use BackBee\Cache\AbstractCache;
-use BackBee\Config\Config;
-use BackBee\DependencyInjection\Container;
-use BackBee\DependencyInjection\DispatchTagEventInterface;
-use BackBee\DependencyInjection\Dumper\DumpableServiceInterface;
-
-class Config implements DispatchTagEventInterface, DumpableServiceInterface
-{
-    public function __construct(
-        $basedir,
-        AbstractCache $cache = null,
-        Container $container = null,
-        $debug = false,
-        array $yml_to_ignore = []
-    ){/*..*/}
-}
-
-?&gt;
+<h2 id="the-translation-component">The Translation component</h2>
+<p>This component is used in BackBee to translate text into differents languages. Note this component is an extension of <a href="http://symfony.com/doc/current/components/translation/index.html">Symfony Translation Component</a></p>
+<h3 id="how-the-translation-work">How the translation work</h3>
+<p>BackBee translation component override <code>Symfony\Component\Translation\Translator</code> to lazy load every catalogs from:
+- BackBee\Resources\translations
+- PATH_TO_REPOSITORY\Resources\translations
+- PATH_TO_CONTEXT_REPOSITORY\Resources\translations.</p>
+<p>BackBee use <code>XLIFF</code> catalogs to translate statics contents into your templates.</p>
+<h3 id="configuration">Configuration</h3>
+<p>BackBee become with own is catalog and it can be extended without configuration if you put your catalog into the folder <code>repository/translations</code>, the file need some naming convention <code>messages.{locale}.xlf</code> you need to adapt <code>{locale}</code> with one real locale like en, fr, etc.</p>
+<p>You configure the default locale of the site in <code>encoding.yml</code> into <code>repository/Config</code> folder. By default the value is <code>~</code> and is corresponding to <code>en_US</code> locale.</p>
+<h3 id="the-catalog">The Catalog</h3>
+<p>First step will go to create our first catalog and need to follow the Oasis XLIFF specifications.</p>
+<pre><code class="xliff">&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;xliff version=&quot;1.2&quot; xmlns=&quot;urn:oasis:names:tc:xliff:document:1.2&quot;&gt;
+    &lt;file source-language=&quot;en&quot; datatype=&quot;plaintext&quot; original=&quot;file.ext&quot;&gt;
+        &lt;body&gt;
+            &lt;trans-unit id=&quot;1&quot;&gt;
+                &lt;source&gt;hello.backbee&lt;/source&gt;
+                &lt;target&gt;Hello BackBee !&lt;/target&gt;
+            &lt;/trans-unit&gt;
+        &lt;/body&gt;
+    &lt;/file&gt;
+&lt;/xliff&gt;
 </code></pre>
 
-<p><em>This component is not related and not compatible with Symfony Config component.</em></p>
-<h2 id="yaml-parsing-filtering-and-extending">YAML parsing, filtering and extending</h2>
-<p>The BackBee Config Component can take a valid directory as argument, and merge the configuration according to the data set
-in this YAML files. If you don't know YAML, you can take a look to the <a href="http://symfony.com/doc/current/components/yaml/yaml_format.html">Symfony YAML format documentation</a>.</p>
-<p>Moreover, BackBee Config component allows you to ignore some files.</p>
-<pre><code class="php">&lt;?php
-
-use BackBee\Config\Config;
-
-class Foo
-{
-    const DIRECTORY = '/my-valid/path';
-
-    public function returnConfiguration(array $filesToIgnore)
-    {
-        return new Config(self::DIRECTORY, null, null, false, $filesToIgnore);
-    }
-}
-
-?&gt;
+<blockquote>
+<p>In this  catalog case we define that the string <code>hello.backbee</code> will be translate into <code>Hello BackBee !</code></p>
+</blockquote>
+<h3 id="use-translation">Use translation</h3>
+<p>In template you can access to the translator by the global <code>bb</code> and you can use is function <code>trans</code> to translate your string.</p>
+<pre><code class="twig">{{ bb.translator.trans('hello.backbee') }}
 </code></pre>
 
-<p>This way, the ignored files won't be parsed.</p>
-<p>Thanks to the <em>BackBee environments</em>, you can also extend and improve your default configuration.
-For instance, let's say you want to add a specific configuration when your are in a "testing" environment.</p>
-<p>You can set the environment this way:</p>
-<pre><code class="php">&lt;?php
+<p>This will return "Hello BackBee !".</p>
+<p>For using it out of the template you need to access to the Dependencies Invection Container and then you can use the <code>trans</code> method.</p>
+<pre><code class="php">$translator = $this-&gt;getApplication()-&gt;getContainer()-&gt;get('translator');
 
-use BackBee\Config\Config;
-
-class Foo
-{
-    const DIRECTORY = '/my-valid/path';
-
-    public function TestingConfiguration()
-    {
-        $config = new Config('/repository/Config', null, null, false, []);
-
-        return $config-&gt;setEnvironment('testing');
-
-        /**
-         * Now the object is able to parse YAML files from theses directories:
-         * /repository/Config
-         * /repository/Config/testing
-         * and we are also able to parse specific &quot;environment files&quot;:
-         * /repository/Config/foo.testing.yml
-         */
-    }
-}
-
-?&gt;
+$translator-&gt;trans('hello.backbee');
 </code></pre>
 
-<p>This is simple and powerful, you can be very specific on the configuration you want to use.
-Configurations keys and parameters are merged recursively, starting from base directory to the environnement directory.
-Thank to the "On cascade system", you can also add a new directory to allow an override of the current configuration.</p>
-<pre><code class="php">&lt;?php
-
-use BackBee\Config\Config;
-
-class Foo
-{
-    const DIRECTORY = '/my-valid/path';
-
-    public function overrideTestingConfiguration(Config $config, $directory)
-    {
-        return $config-&gt;extend($directory);
-
-        /**
-         * Now the object is able to parse YAML files from theses directories:
-         * /repository/Config/&lt;$directory&gt;
-         * If a key is declared in &lt;$directory&gt; configuration files, the configuration is overriden
-         */
-    }
-}
-
-?&gt;
-</code></pre>
-
-<h2 id="configuration-persisting">Configuration persisting</h2>
-<p>The BackBee Config Component can persist configurations in file or in database, you can also create your own "persistors"
-thanks to the <code>BackBee\Config\PersistorInterface</code>.</p>
-<p>For now, two persistors are provided in BackBee CMS:</p>
-<ul>
-<li>the <strong>File</strong> Persistor allows you to write and override the main configuration file (config.yml)</li>
-<li>the <strong>Registry</strong> Persistor is a simple database Key/Value system</li>
-</ul>
-<p>If we take a look at the BackBee CMS configuration:</p>
-<pre><code class="yaml">config:
-    save_in_registry: true # default value: true
-    persistor: [BackBee\Config\Persistor\File, BackBee\Config\Persistor\Registry]
-</code></pre>
-
-<ul>
-<li><code>save_in_registry</code> is a particular option: if true, this means BackBee will try to look for an overidden configuration
-  stored in Registry.</li>
-<li><code>persistor</code> is the list of activated persistors. BackBee will loop on each and try to find configuration. If no one
-  provides the requested configuration, an exception will be thrown.</li>
-</ul>
-<h2 id="configuration-caching">Configuration caching</h2>
-<p>The BackBee Config Component is fully compatible with BackBee Cache component.</p>
-<p>When you create your Config object, you can pass an instance of <code>BackBee\Cache\AbstractCache</code> as a second argument.
-This way, in non-debug mode (fourth argument, <strong>false</strong> by default), the second time you get the information, the configuration
-will be constructed from cache instead of built again from files or database registry.</p></div>
+<blockquote>
+<p>the getApplication method is depending in the context where you run your translation.</p>
+<p>If you are in an event listener you need to  do <code>$this-&gt;getEventDispatcher()-&gt;getApplication()-&gt;...</code></p>
+</blockquote>
+<p>Like before the result will be "Hello BackBee !".</p>
+<p>If you want do some more advanced usage of the component translation you will found more information on <a href="http://symfony.com/doc/current/components/translation/usage.html">Symfony Translation Component Usage Documentation</a></p></div>
         </div>
 
 	<footer class="col-md-12">
