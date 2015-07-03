@@ -6,10 +6,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         
-        <link rel="canonical" href="http://www.backbee.com/developper-documentation/requirements/">
+        <link rel="canonical" href="http://www.backbee.com/developper-documentation/project_architecture/">
         <link rel="shortcut icon" href="../../img/favicon.ico">
 
-	<title>Requirements - The BackBee documentation</title>
+	<title>Project Architecture - The BackBee documentation</title>
 
         <link href="../../css/bootstrap-3.0.3.min.css" rel="stylesheet">
         <link href="../../css/font-awesome-4.0.3.css" rel="stylesheet">
@@ -60,8 +60,8 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Developper documentation <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                     
-                        <li class="active">
-                            <a href="./">Requirements</a>
+                        <li >
+                            <a href="../requirements/">Requirements</a>
                         </li>
                     
                         <li >
@@ -76,8 +76,8 @@
                             <a href="../configuration/">Configuration</a>
                         </li>
                     
-                        <li >
-                            <a href="../project_architecture/">Project Architecture</a>
+                        <li class="active">
+                            <a href="./">Project Architecture</a>
                         </li>
                     
                     </ul>
@@ -155,12 +155,12 @@
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
                 <li >
-                    <a rel="next" href="../..">
+                    <a rel="next" href="../configuration/">
                         <i class="fa fa-arrow-left"></i> Previous
                     </a>
                 </li>
                 <li >
-                    <a rel="prev" href="../installation/">
+                    <a rel="prev" href="../cookbooks/create_bundle_administration/">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -185,7 +185,7 @@
     
         <li class="main active"><a href="#developper-documentation">Developper documentation</a></li>
         
-            <li><a href="#requirements-for-running-backbee-cms">Requirements for running BackBee CMS</a></li>
+            <li><a href="#project-architecture">Project Architecture</a></li>
         
     
     </ul>
@@ -193,41 +193,86 @@
             <div class="col-md-9" role="main">
 
 <h1 id="developper-documentation">Developper documentation</h1>
-<h2 id="requirements-for-running-backbee-cms">Requirements for running BackBee CMS</h2>
-<p>To run BackBee CMS, your system needs to fulfill to a list of requirements.</p>
-<p>Here you will find the list of required and optional requirements.</p>
-<h3 id="required">Required</h3>
-<p>Because BackBee CMS is built on top of Symfony components, theses elements are required.</p>
+<h2 id="project-architecture">Project Architecture</h2>
+<h3 id="global-architecture">Global Architecture</h3>
+<p>Global Architecture is build by default by BackBee, it's compose the folders:
+- <code>bundle</code> optional folder, create it only if you want develop your own bundle. By default the bundle is installed into the vendor folder
+- <code>cache</code> optional  and can be placed out of the project and is location have to be specified into <code>services.yml</code> into the <code>Config</code> folder.
+- <code>log</code> same as cache folder
+- <code>public</code> folder it is the document root of your website
+- <code>repository</code> The folder where you customize your project it's more develop after
+- <code>vendor</code> folder build by composer where you can find every dependencies</p>
+<h3 id="repository-folder-architecture">Repository folder Architecture</h3>
+<p>Repository folder (writhed <code>repository</code>) is certainly the most important folder of your project, is in this folder where you will customize entirely your BackBee project. If you start from standard edition you have some folder available, but you can add lot of more and we are going to enumerate every folder it's possible to add (Take note of you have to respect the Case).</p>
 <ul>
-<li><code>JSON</code> needs to be enabled</li>
-<li><code>ctype</code> needs to be enabled</li>
-<li><code>mbstring</code> needs to be enabled</li>
-<li>Your php configuration needs to have the date.timezone setting completed</li>
+<li>
+<p><code>ClassContent</code> This folder contains your contents definitions</p>
+</li>
+<li>
+<p><code>Config</code> Here you can find and override each config file of BackBee</p>
+</li>
+<li>
+<p><code>Controller</code> In this folder your controller will be automatically auto-loaded</p>
+</li>
+<li>
+<p><code>Data</code> Folder where every uploaded file are stored. Against cache and log folder, data can moved out of the project by customizing <code>services.yml</code></p>
+</li>
+<li>
+<p><code>Layouts</code> Layouts template are stored in this folder.</p>
+</li>
+<li>
+<p><code>Listener</code> In this folder your Event Listeners will be automatically auto-loaded.</p>
+</li>
+<li>
+<p><code>Resources</code> In this folder you put your statics files like images, JS scripts and CSS.</p>
+</li>
+<li>
+<p><code>Templates</code> Folder where you put your helpers into <code>helpers</code> subfolder, partials into <code>partials</code> subfolder and ClassContent templates into <code>scripts</code> subfolder.</p>
+</li>
+<li>
+<p><code>Traits</code> In this folder your ClassContent's Trait will be automatically auto-loaded.</p>
+</li>
+<li>
+<p><code>Translation</code> Your translation catalog will automatically auto-loaded in this folder.</p>
+</li>
 </ul>
-<p>The mibimum version of PHP must be: <strong>PHP 5.4.0</strong>.</p>
-<h3 id="optional">Optional</h3>
-<ul>
-<li>You (may) need to have the PHP-XML module installed</li>
-<li>You (may) need to have at least version 2.6.21 of libxml</li>
-<li>You (may) need to have PHP tokenizer module enabled</li>
-<li>You (may) need to have iconv module enabled</li>
-<li>You (may) need to have POSIX enabled (only on *nix)</li>
-<li>You (may) need to have Intl installed with ICU 4+</li>
-<li>You (may) need to have APC 3.0.17+ installed (or another opcode cache needs to be installed)</li>
-<li>php configuration recommended settings:</li>
-</ul>
-<pre><code>short_open_tag = Off
-
-magic_quotes_gpc = Off
-
-register_globals = Off
-
-session.auto_start = Off
+<h3 id="context-and-repository-folder-overriding">Context and repository folder overriding</h3>
+<p>In BackBee repository folder can be contextualized. You use an contextualized repository when you start your application, it's the first parameter in construct method.</p>
+<pre><code class="php">&lt;?php
+$app = new \BackBee\Standard\Application('newContext');
+// ...
 </code></pre>
 
-<h3 id="doctrine2-database-management">Doctrine2 (Database management)</h3>
-<p>Because we depend on Doctrine 2, you will need to have PDO installed. Additionally, you need to have the PDO driver installed to use your database server.
-Also, you need <code>php5-sqlite</code> extension to be installed and enabled during the installation process.</p></div>
+<p>If you initialize your application like this, you have the possibility to extend the entire repository folder. Before will see the repository folder architecture then you can reproduce it into your context.</p>
+<p>The context repository, have to be created into the <code>repository</code> folder and have the same name as the key you pass in first parameter of the Application.</p>
+<p>After this you override the file you want by reproducing the folder path and the file. And for the other element, you don't need to reproduce it, it will automatically inherited.</p>
+<pre><code class="path">repository/
+  ClassContent/
+  Config/
+    doctrine.yml
+  Data/
+  Listener/
+  newContext/
+    Config/
+      doctrine.yml
+  Resources/
+  ...
+</code></pre>
+
+<p>In this case, doctrine configuration will be override to use an other database for example.</p>
+<pre><code class="path">repository/
+  ClassContent/
+    AnContent.yml
+  ...
+  newContext/
+    ClassContent/
+      AnotherContent.yml
+  Resources/
+  ...
+</code></pre>
+
+<p>In this case the "newContext" instance have access to two type of ClassContent and the default configuration only one.</p>
+<p>And of course you can combine the two example.</p></div>
         </div>
 
 	<footer class="col-md-12">
