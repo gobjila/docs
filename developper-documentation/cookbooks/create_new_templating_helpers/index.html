@@ -6,10 +6,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         
-        <link rel="canonical" href="http://www.backbee.com/developper-documentation/cookbooks/create_new_commands/">
+        <link rel="canonical" href="http://www.backbee.com/developper-documentation/cookbooks/create_new_templating_helpers/">
         <link rel="shortcut icon" href="../../../img/favicon.ico">
 
-	<title>Create new commands - The BackBee documentation</title>
+	<title>Create new templating helpers - The BackBee documentation</title>
 
         <link href="../../../css/bootstrap-3.0.3.min.css" rel="stylesheet">
         <link href="../../../css/font-awesome-4.0.3.css" rel="stylesheet">
@@ -89,12 +89,12 @@
                             <a href="../create_bundle_administration/">Create bundle administration</a>
                         </li>
                     
-                        <li class="active">
-                            <a href="./">Create new commands</a>
+                        <li >
+                            <a href="../create_new_commands/">Create new commands</a>
                         </li>
                     
-                        <li >
-                            <a href="../create_new_templating_helpers/">Create new templating helpers</a>
+                        <li class="active">
+                            <a href="./">Create new templating helpers</a>
                         </li>
                     
                         <li >
@@ -151,12 +151,12 @@
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
                 <li >
-                    <a rel="next" href="../create_bundle_administration/">
+                    <a rel="next" href="../create_new_commands/">
                         <i class="fa fa-arrow-left"></i> Previous
                     </a>
                 </li>
                 <li >
-                    <a rel="prev" href="../create_new_templating_helpers/">
+                    <a rel="prev" href="../customize_error_pages/">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -181,7 +181,7 @@
     
         <li class="main active"><a href="#cookbooks">CookBooks</a></li>
         
-            <li><a href="#create-new-commands">Create new commands</a></li>
+            <li><a href="#create-new-templating-helpers">Create new templating Helpers</a></li>
         
     
     </ul>
@@ -189,68 +189,67 @@
             <div class="col-md-9" role="main">
 
 <h1 id="cookbooks">CookBooks</h1>
-<h2 id="create-new-commands">Create new commands</h2>
-<p>The Console page of the Components section covers how to create a console application.
-This cookbook article covers the creation of a command using BackBee Standard Edition.</p>
-<h3 id="automatically-registering-commands">Automatically Registering Commands</h3>
-<p>To make the console commands available automatically with BackBee, create a
-<code>Command</code> directory inside your bundle and create a PHP file suffixed with
-<code>Command.php</code> for each command that you want to provide. For example, if you
-want to extend the DemoBundle to welcome you from the command line, create
-<code>WelcomeCommand.php</code> and add the following to it:</p>
-<pre><code class="php">// bundle/WelcomeBundle/Command/WelcomeCommand.php
-namespace WelcomeBundle\Command;
+<h2 id="create-new-templating-helpers">Create new templating Helpers</h2>
+<p>This cookbook article covers the creation of Renderer helpers using BackBee Standard Edition.</p>
+<p>Templating helpers are PHP classes that extend the <code>final</code> class <code>BackBee\Renderer\AbstractRenderer\AbstractHelper</code>,
+and need to be located in <code>repository/Templates/helpers</code> folder in your BackBee application (or in <code>Templates/helpers</code> folder in bundles).</p>
+<p>As an example, we will create an helper to provide a new <code>bb_dump()</code> function in templates.</p>
+<blockquote>
+<p>You need to create class with the same name as the function you want to create, because <code>__invoke</code> magic function is called.</p>
+</blockquote>
+<pre><code class="php">&lt;?php
+namespace BackBee\Renderer\Helper;
 
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
-
-
-use BackBee\Console\AbstractCommand;
-
-class WelcomeCommand extends AbstractCommand
+/**
+ * @author Mickaël Andrieu &lt;mickael.andrieu@lp-digital.fr&gt;
+ */
+class bb_dump extends AbstractHelper
 {
-    protected function configure()
+    /**
+     * Returns dump from template (to ease debug of Class Content rendering)
+     * If Symfony VarDumper is autoaded, use it instead of Doctrine Debug::dump()
+     *
+     * @param  mixin $mixin the variable to dump
+     *
+     * @return string
+     */
+    public function __invoke($mixin)
     {
-        $this
-            -&gt;setName('demo:welcome')
-            -&gt;setDescription('Welcome someone')
-            -&gt;addArgument(
-                'name',
-                InputArgument::OPTIONAL,
-                'Who do you want to welcome?'
-            )
-            -&gt;addOption(
-                'yell',
-                null,
-                InputOption::VALUE_NONE,
-                'If set, the message will yell in uppercase letters'
-            )
-            -&gt;setHelp(&lt;&lt;&lt;EOF
-The &lt;info&gt;%command.name%&lt;/info&gt; command can welcome someone.
-With the option ``yell``, the message will be displayed in uppercase letters.
-EOF;
-            )
-        ;
-    }
-
-    protected function execute(InputInterface $input, OutputInterface $output)
-    { 
-        $text = 'Welcome '.$input-&gt;getArgument('name');
-
-        if ($input-&gt;getOption('yell')) {
-            $text = strtoupper($text);
+        if (!class_exists('\Symfony\Component\VarDumper\VarDumper')) {
+            return '&lt;pre&gt;' . \Doctrine\Common\Util\Debug::dump($mixin, 2, true, false) . '&lt;/pre&gt;';
+        }else {
+            return dump($mixin);
         }
-
-        $output-&gt;writeln($text);
     }
 }
 </code></pre>
 
-<p>This command will now automatically be available to run:</p>
-<pre><code class="bash">    $ ./backbee demo:welcome Charles
-</code></pre></div>
+<p>The helper is done and can used directly in all templates.</p>
+<pre><code class="twig">&lt;!-- /repository/Templates/scripts/Home/HomeContainer --&gt;
+&lt;div {{ this.bbcontent(null, {'class': 'container main_containt'})|raw }}&gt;
+
+    {% if this.getObject().getParamValue('container_title') != '' %}
+        &lt;div class=&quot;bloc-title-2 triangle-b&quot;&gt;
+          &lt;div class=&quot;border-bx2 border-color color-txt-1&quot;&gt;{{ this.getObject().getParamValue('container_title') }}&lt;/div&gt;
+        &lt;/div&gt;
+    {% endif %}
+
+    {{ this.render(container)|raw }}
+
+    {{ this.bb_dump(this.getObject())|raw }}
+&lt;/div&gt;
+</code></pre>
+
+<p>or, in phtml:</p>
+<pre><code class="php">&lt;!-- in a pHTML template --&gt;
+&lt;p&gt;
+&lt;?php $this-&gt;bb_dump($this-&gt;getObject()); ?&gt;
+&lt;/p&gt;
+</code></pre>
+
+<p>Will produce, with the <code>[Symfony VarDumper](http://symfony.com/doc/current/components/var_dumper/introduction.html)</code> added as dependency of project,
+this output:</p>
+<p><img alt="The new dump() helper" src="http://i.imgur.com/GjG4uwp.png" /></p></div>
         </div>
 
 	<footer class="col-md-12">
