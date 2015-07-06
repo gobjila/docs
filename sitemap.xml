@@ -110,6 +110,12 @@
     </url>
         
     <url>
+     <loc>http://www.backbee.com//developper-documentation/components/nested_node/</loc>
+     <lastmod>2015-07-06</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
      <loc>http://www.backbee.com//developper-documentation/components/routing/</loc>
      <lastmod>2015-07-06</lastmod>
      <changefreq>daily</changefreq>
@@ -123,12 +129,6 @@
         
     <url>
      <loc>http://www.backbee.com//developper-documentation/components/translation/</loc>
-     <lastmod>2015-07-06</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    <url>
-     <loc>http://www.backbee.com//developper-documentation/components/nested_node/</loc>
      <lastmod>2015-07-06</lastmod>
      <changefreq>daily</changefreq>
     </url>
