@@ -6,10 +6,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         
-        <link rel="canonical" href="http://www.backbee.com/developper-documentation/components/config/">
+        <link rel="canonical" href="http://www.backbee.com/developper-documentation/components/cache/">
         <link rel="shortcut icon" href="../../../img/favicon.ico">
 
-	<title>Config - The BackBee documentation</title>
+	<title>Cache - The BackBee documentation</title>
 
         <link href="../../../css/bootstrap-3.0.3.min.css" rel="stylesheet">
         <link href="../../../css/font-awesome-4.0.3.css" rel="stylesheet">
@@ -140,16 +140,16 @@
                             <a href="../bundle/">Bundle</a>
                         </li>
                     
-                        <li >
-                            <a href="../cache/">Cache</a>
+                        <li class="active">
+                            <a href="./">Cache</a>
                         </li>
                     
                         <li >
                             <a href="../classcontent/">ClassContent</a>
                         </li>
                     
-                        <li class="active">
-                            <a href="./">Config</a>
+                        <li >
+                            <a href="../config/">Config</a>
                         </li>
                     
                         <li >
@@ -185,12 +185,12 @@
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
                 <li >
-                    <a rel="next" href="../classcontent/">
+                    <a rel="next" href="../bundle/">
                         <i class="fa fa-arrow-left"></i> Previous
                     </a>
                 </li>
                 <li >
-                    <a rel="prev" href="../event_listener/">
+                    <a rel="prev" href="../classcontent/">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -215,15 +215,13 @@
     
         <li class="main active"><a href="#components">Components</a></li>
         
-            <li><a href="#the-config-component">The Config Component</a></li>
+            <li><a href="#the-cache-component">The Cache Component</a></li>
         
-            <li><a href="#how-the-config-component-work">How the Config component work ?</a></li>
+            <li><a href="#cache-adapters">Cache Adapters</a></li>
         
-            <li><a href="#yaml-parsing-filtering-and-extending">YAML parsing, filtering and extending</a></li>
+            <li><a href="#cache-validatinginvalidating">Cache validating/invalidating</a></li>
         
-            <li><a href="#configuration-persisting">Configuration persisting</a></li>
-        
-            <li><a href="#configuration-caching">Configuration caching</a></li>
+            <li><a href="#cache-key-generator">Cache key generator</a></li>
         
     
     </ul>
@@ -231,142 +229,195 @@
             <div class="col-md-9" role="main">
 
 <h1 id="components">Components</h1>
-<h2 id="the-config-component">The Config Component</h2>
-<p>This component is used in BackBee to set parameters from YAML files into the Container.</p>
-<h2 id="how-the-config-component-work">How the Config component work ?</h2>
-<p>The BackBee Config Component provides a <code>Config</code> object able to:</p>
+<h2 id="the-cache-component">The Cache Component</h2>
+<p>The Cache component provides many adapters to the most used and cache systems for validating/invalidating the cache.</p>
+<h2 id="cache-adapters">Cache Adapters</h2>
 <ul>
-<li>Parse YAML files from a directory;</li>
-<li>Persist this configuration in file or in database;</li>
-<li>Set this configuration in <code>BackBee Container</code>;</li>
-<li>Save and load configuration from <code>BackBee Cache</code>;</li>
+<li>APC Adapter: Uses <code>APC</code> cache if available</li>
+<li>DAO Adapter: Uses database cache system</li>
+<li>FileAdapter: Uses file system</li>
+<li>Memcache Adapter: Uses <code>memcache</code> if available and set up</li>
+<li>Memcached Adapter: Uses <code>memcached</code> if available and set up</li>
 </ul>
+<p>There is also a special one, used when cache is not activated: the <code>NoCache</code> adapter.</p>
+<p>You can create your own adapters implementing the <code>CacheInterface</code> interface:</p>
 <pre><code class="php">&lt;?php
-
-use BackBee\Cache\AbstractCache;
-use BackBee\Config\Config;
-use BackBee\DependencyInjection\Container;
-use BackBee\DependencyInjection\DispatchTagEventInterface;
-use BackBee\DependencyInjection\Dumper\DumpableServiceInterface;
-
-class Config implements DispatchTagEventInterface, DumpableServiceInterface
+/*
+ * Copyright (c) 2011-2015 Lp digital system
+ *
+ * This file is part of BackBee.
+ *
+ * BackBee is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * BackBee is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with BackBee. If not, see &lt;http://www.gnu.org/licenses/&gt;.
+ *
+ * @author Charles Rouillon &lt;charles.rouillon@lp-digital.fr&gt;
+ */
+namespace BackBee\Cache;
+use Psr\Log\LoggerInterface;
+use BackBee\Cache\Exception\CacheException;
+/**
+ * Abstract class for cache adapters.
+ *
+ * @category    BackBee
+ *
+ * @copyright   Lp digital system
+ * @author      Mickaël Andrieu &lt;mickael.andrieu@lp-digital.fr&gt;
+ */
+interface CacheInterface
 {
-    public function __construct(
-        $basedir,
-        AbstractCache $cache = null,
-        Container $container = null,
-        $debug = false,
-        array $yml_to_ignore = []
-    ){/*..*/}
+    /**
+     * Returns the available cache for the given id if found returns false else.
+     *
+     * @param string    $id          Cache id
+     * @param boolean   $bypassCheck Allow to find cache without test it before
+     * @param \DateTime $expire      Optionnal, the expiration time (now by default)
+     *
+     * @return string|false
+     */
+    public function load($id, $bypassCheck, \DateTime $expire);
+    /**
+     * Tests if a cache is available or not (for the given id).
+     *
+     * @param string $id Cache id
+     *
+     * @return int|false the last modified timestamp of the available cache record (0 infinite expiration date)
+     */
+    public function test($id);
+    /**
+     * Saves some string datas into a cache record.
+     *
+     * @param string $id       Cache id
+     * @param string $data     Datas to cache
+     * @param int    $lifetime Optional, the specific lifetime for this record
+     *                         (by default null, infinite lifetime)
+     * @param string $tag      Optional, an associated tag to the data stored
+     *
+     * @return boolean true if cache is stored false otherwise
+     */
+    public function save($id, $data, $lifetime, $tag);
+    /**
+     * Removes a cache record.
+     *
+     * @param string $id Cache id
+     *
+     * @return boolean true if cache is removed false otherwise
+     */
+    public function remove($id);
+    /**
+     * Clears all cache records.
+     *
+     * @return boolean true if cache is cleared false otherwise
+     */
+    public function clear();
+    /**
+     * Sets the cache logger.
+     *
+     * @param \Psr\Log\LoggerInterface $logger
+     *
+     * @return \BackBee\Cache\CacheAdapterInterface
+     */
+    public function setLogger(LoggerInterface $logger);
+    /**
+     * Gets the cache logger.
+     *
+     * @return \Psr\Log\LoggerInterface $logger
+     */
+    public function getLogger();
+    /**
+     * Returns the cache context.
+     *
+     * @return string|null
+     */
+    public function getContext();
+    /**
+     * Sets the cache context.
+     *
+     * @param string $context
+     *
+     * @return \BackBee\Cache\CacheAdapterInterface
+     */
+    public function setContext($context);
+    /**
+     * Logs a message on provided level if a logger is defined.
+     *
+     * @param string $level   The log level
+     * @param string $message The message to log
+     * @param array  $context The logging context
+     */
+    public function log($level, $message, array $context);
+    /**
+     * Returns the expiration timestamp.
+     *
+     * @param int $lifetime
+     *
+     * @return int
+     */
+    public function getExpireTime($lifetime);
+    /**
+     * Control the lifetime against min and max lifetime if provided.
+     *
+     * @param int $lifetime
+     *
+     * @return int
+     */
+    public function getControledLifetime($lifetime);
 }
-
-?&gt;
 </code></pre>
 
-<p><em>This component is not related and not compatible with Symfony Config component.</em></p>
-<h2 id="yaml-parsing-filtering-and-extending">YAML parsing, filtering and extending</h2>
-<p>The BackBee Config Component can take a valid directory as argument, and merge the configuration according to the data set
-in this YAML files. If you don't know YAML, you can take a look to the <a href="http://symfony.com/doc/current/components/yaml/yaml_format.html">Symfony YAML format documentation</a>.</p>
-<p>Moreover, BackBee Config component allows you to ignore some files.</p>
+<p>You can also extend the <code>AbstractCache</code> class provided by the Cache component.</p>
+<h2 id="cache-validatinginvalidating">Cache validating/invalidating</h2>
+<p>Thanks to the <code>BackBee\Cache\CacheValidator</code> class, you can use the Symfony Validator component to validate or invalidate your cache. Let's see an use case.</p>
+<p>The CacheListener occurs at prerender at postrender and flush with contents. Before going deeper into each of these methods, we need to test various parameters of the application and the application. So we can define a validation group called ' cache_status '. This group contains two validators :</p>
+<ul>
+<li>ApplicationCoreValidator check:<ul>
+<li>that the user is not a BBUser;</li>
+<li>that the application is not in debug mode</li>
+<li>the application has started and that is not a customer SAPI</li>
+</ul>
+</li>
+<li>RequestValidator check:<ul>
+<li>that the request method is GET because we do not want to hide the POST or PUT requests for example.</li>
+</ul>
+</li>
+</ul>
+<p>The execution of prerender methods postrender and flush a content CacheListener is conditional that respond positively CacheValidator :</p>
 <pre><code class="php">&lt;?php
-
-use BackBee\Config\Config;
-
-class Foo
+class CacheListener
 {
-    const DIRECTORY = '/my-valid/path';
-
-    public function returnConfiguration(array $filesToIgnore)
+    public function onPreRenderContent(BackBee\Event\Event $event)
     {
-        return new Config(self::DIRECTORY, null, null, false, $filesToIgnore);
+        $cache_validator = $event-&gt;getApplication()
+            -&gt;getContainer()
+            -&gt;get('cache.validator');
+
+        if (!$cache_validator-&gt;isValid('cache_status', $event-&gt;getTarget())) { // the second parameter of isValid() is optional
+            return;
+        }
+
+        // execute your pre-render tasks
     }
 }
-
-?&gt;
 </code></pre>
 
-<p>This way, the ignored files won't be parsed.</p>
-<p>Thanks to the <em>BackBee environments</em>, you can also extend and improve your default configuration.
-For instance, let's say you want to add a specific configuration when your are in a "testing" environment.</p>
-<p>You can set the environment this way:</p>
-<pre><code class="php">&lt;?php
-
-use BackBee\Config\Config;
-
-class Foo
-{
-    const DIRECTORY = '/my-valid/path';
-
-    public function TestingConfiguration()
-    {
-        $config = new Config('/repository/Config', null, null, false, []);
-
-        return $config-&gt;setEnvironment('testing');
-
-        /**
-         * Now the object is able to parse YAML files from theses directories:
-         * /repository/Config
-         * /repository/Config/testing
-         * and we are also able to parse specific &quot;environment files&quot;:
-         * /repository/Config/foo.testing.yml
-         */
-    }
-}
-
-?&gt;
-</code></pre>
-
-<p>This is simple and powerful, you can be very specific on the configuration you want to use.
-Configurations keys and parameters are merged recursively, starting from base directory to the environnement directory.
-Thank to the "On cascade system", you can also add a new directory to allow an override of the current configuration.</p>
-<pre><code class="php">&lt;?php
-
-use BackBee\Config\Config;
-
-class Foo
-{
-    const DIRECTORY = '/my-valid/path';
-
-    public function overrideTestingConfiguration(Config $config, $directory)
-    {
-        return $config-&gt;extend($directory);
-
-        /**
-         * Now the object is able to parse YAML files from theses directories:
-         * /repository/Config/&lt;$directory&gt;
-         * If a key is declared in &lt;$directory&gt; configuration files, the configuration is overriden
-         */
-    }
-}
-
-?&gt;
-</code></pre>
-
-<h2 id="configuration-persisting">Configuration persisting</h2>
-<p>The BackBee Config Component can persist configurations in file or in database, you can also create your own "persistors"
-thanks to the <code>BackBee\Config\PersistorInterface</code>.</p>
-<p>For now, two persistors are provided in BackBee CMS:</p>
-<ul>
-<li>the <strong>File</strong> Persistor allows you to write and override the main configuration file (config.yml)</li>
-<li>the <strong>Registry</strong> Persistor is a simple database Key/Value system</li>
-</ul>
-<p>If we take a look at the BackBee CMS configuration:</p>
-<pre><code class="yaml">config:
-    save_in_registry: true # default value: true
-    persistor: [BackBee\Config\Persistor\File, BackBee\Config\Persistor\Registry]
-</code></pre>
-
-<ul>
-<li><code>save_in_registry</code> is a particular option: if true, this means BackBee will try to look for an overidden configuration
-  stored in Registry.</li>
-<li><code>persistor</code> is the list of activated persistors. BackBee will loop on each and try to find configuration. If no one
-  provides the requested configuration, an exception will be thrown.</li>
-</ul>
-<h2 id="configuration-caching">Configuration caching</h2>
-<p>The BackBee Config Component is fully compatible with BackBee Cache component.</p>
-<p>When you create your Config object, you can pass an instance of <code>BackBee\Cache\AbstractCache</code> as a second argument.
-This way, in non-debug mode (fourth argument, <strong>false</strong> by default), the second time you get the information, the configuration
-will be constructed from cache instead of built again from files or database registry.</p></div>
+<p>You can set as many validation group as you want and create as validator as you like provided they implement all the <code>BackBee\Cache\Validator\ValidatorInterface</code> interface and are declared in a services.yml (that of the repository or any of your bundles) with <code>cache.validator</code> tag. </p>
+<p>This last point allows the CacheValidator load them automatically so you do add them manually with CacheValidator <code>addValidator::method()</code>.</p>
+<h2 id="cache-key-generator">Cache key generator</h2>
+<p>The BackBee Cache component provide a centralized cache key generator: the class <code>BackBee\Cache\CacheIdentifierGenerator</code>.</p>
+<p>This service (accessible from the container application with id <code>cache.identifier_generator</code>) generates a new cache id as the generator group that you provide as a parameter.</p>
+<p>These groups consist of one or more appenders.</p>
+<p>You can define as generator groups as you like and arbitrarily select the number of appender in each of its groups. The only requirement is that a generator must necessarily implement the <code>BackBee\Cache\IdentifierAppender\IdentifierAppenderInterface interface</code>.</p>
+<p>They can be automatically loaded into the CacheIdentifierGenerator if you declare them as a repository of service or one of your bundles .</p>
+<p>Note that each generator must have the tag <code>cache.identifier.appender</code>.</p></div>
         </div>
 
 	<footer class="col-md-12">

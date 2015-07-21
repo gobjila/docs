@@ -123,6 +123,10 @@
                             <a href="../../cookbooks/use_swift_mailer_in_backbee/">Use Swift Mailer in BackBee</a>
                         </li>
                     
+                        <li >
+                            <a href="../../cookbooks/layout_creation/">Layout creation using LayoutBuilderBundle</a>
+                        </li>
+                    
                     </ul>
                 </li>
             
@@ -134,6 +138,10 @@
                     
                         <li >
                             <a href="../bundle/">Bundle</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../cache/">Cache</a>
                         </li>
                     
                         <li class="active">
@@ -177,7 +185,7 @@
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
                 <li >
-                    <a rel="next" href="../bundle/">
+                    <a rel="next" href="../cache/">
                         <i class="fa fa-arrow-left"></i> Previous
                     </a>
                 </li>
@@ -207,7 +215,7 @@
     
         <li class="main active"><a href="#component">Component</a></li>
         
-            <li><a href="#classcontent-component">ClassContent Component</a></li>
+            <li><a href="#the-classcontent-component">The ClassContent Component</a></li>
         
     
     </ul>
@@ -215,7 +223,7 @@
             <div class="col-md-9" role="main">
 
 <h1 id="component">Component</h1>
-<h2 id="classcontent-component">ClassContent Component</h2>
+<h2 id="the-classcontent-component">The ClassContent Component</h2>
 <h3 id="what-is-it-a-classcontent">What is it a ClassContent?</h3>
 <p>ClassContents are at the heart of BackBee, every piece of content you will find in BackBee is a ClassContent. It defines your site and how you contribute to.
 ClassContents can be extended, listened, versioned and they all have in common that they implement <code>BackBee\Renderer\RenderableInterface</code>.
@@ -423,7 +431,7 @@ An Autoblock is an fully automated Content, His collection isn't contributable a
 <p>To extend an other ClassContent, you just have to use <code>extends</code> keyword like in the example of the ContentSet.</p>
 <p>There is lots of advantages to extending an other class content. First you do not have to rewrite properties and elements. The second advantage concerns rendering and listeners, BackBee will run through the parent classes to find templates and listener.</p>
 <h4 id="listen-a-classcontent">Listen a ClassContent</h4>
-<p>Add an event listener on a class content is pretty easy and you will find more information in the <a href="/developper-documentation/components/event_listener.md">Event Listener component</a>.</p>
+<p>Add an event listener on a class content is pretty easy and you will find more information in the <a href="../../../developper-documentation/components/event_listener/">Event Listener component</a>.</p>
 <p>To summarize each ClassContent have 5 events attach:
 - prerender
 - onrender
