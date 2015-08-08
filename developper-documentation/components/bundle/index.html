@@ -67,7 +67,7 @@
             
             
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Developper documentation <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Developer documentation <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                     
                         <li >
@@ -275,6 +275,8 @@ class Newsletter extends AbstractBundle
 <p>The <code>Config/config.yml</code> is also required. It will be parsed to get an instance of <code>BackBee\Config\Config</code>. Here bellow a list of bundle basic configuration parameters:</p>
 <pre><code class="yaml"># NEWSLETTER_BUNDLE_ROOT_FOLDER/Config/config.yml
 bundle:
+    name: NewsLetterBundle
+    description: This is a plugin that provide newsletters integration in BackBee
     enable: true # define if the bundle should be load; default: true
     config_per_site: false # allows you to have different configuration per site; default: false
     category: [] # your bundle can belong to none, one or many categories; default: none
