@@ -222,58 +222,28 @@
 <h1 id="developer-documentation">Developer documentation</h1>
 <h2 id="project-architecture">Project Architecture</h2>
 <h3 id="global-architecture">Global Architecture</h3>
-<p>Global Architecture is build by default by BackBee, it composes the folders:
-- <code>bundle</code> optional folder, create it only if you want develop your own bundle. By default the bundle is installed into the vendor folder</p>
+<p>Global Architecture is build by default by BackBee, it composes the folders:</p>
 <ul>
-<li>
-<p><code>cache</code> optional and can be placed out of the project and is location have to be specified into <code>services.yml</code> into the <code>Config</code> folder.</p>
-</li>
-<li>
-<p><code>log</code> same as cache folder</p>
-</li>
-<li>
-<p><code>public</code> folder it is the document root of your website</p>
-</li>
-<li>
-<p><code>repository</code> The folder where you customize your project (see below)</p>
-</li>
-<li>
-<p><code>vendor</code> folder build by composer where you can find every dependencies</p>
-</li>
+<li><code>bundle</code> optional folder, create it only if you want develop your own bundle. By default the bundle is installed into the vendor folder;</li>
+<li><code>cache</code> optional and can be placed out of the project and his location have to be specified into <code>services.yml</code> into the <code>Config</code> folder;</li>
+<li><code>log</code> same as cache folder;</li>
+<li><code>public</code> folder it is the document root of your website;</li>
+<li><code>repository</code> The folder where you customize your project (see below);</li>
+<li><code>vendor</code> folder build by composer where you can find every dependencies.</li>
 </ul>
 <h3 id="repository-folder-architecture">Repository folder Architecture</h3>
-<p>Repository folder (writhed <code>repository</code>) is certainly the most important folder of your project. In this folder you will entirely customize your BackBee project. If you start from standard edition you have some folder available, but you can add lot of more and we are going to enumerate every folder that is possible to add (Take note of you have to respect the Case).</p>
+<p>Repository folder (writhed <code>repository</code>) is certainly the most important folder of your project. In this folder you will entirely customize your BackBee project. If you start from standard edition you have some folder available, but you can add lot of more and we are going to enumerate every folder that is possible to add (Take note of you have to respect the Case):</p>
 <ul>
-<li>
-<p><code>ClassContent</code> This folder contains your content definitions</p>
-</li>
-<li>
-<p><code>Config</code> Here you can find and override each config file of BackBee</p>
-</li>
-<li>
-<p><code>Controller</code> In this folder your controller will be automatically auto-loaded</p>
-</li>
-<li>
-<p><code>Data</code> Folder where every uploaded file is stored. As the cache and log folder, data can be moved out of the project by customizing <code>services.yml</code></p>
-</li>
-<li>
-<p><code>Layouts</code> Layout templates are stored in this folder.</p>
-</li>
-<li>
-<p><code>Listener</code> In this folder your Event Listeners will be automatically loaded.</p>
-</li>
-<li>
-<p><code>Resources</code> In this folder you put your static files like images, JS scripts and CSS.</p>
-</li>
-<li>
-<p><code>Templates</code> Folder where you put your helpers into <code>helpers</code> subfolder, partials into <code>partials</code> subfolder and ClassContent templates into <code>scripts</code> subfolder.</p>
-</li>
-<li>
-<p><code>Traits</code> In this folder your ClassContent's Trait will be automatically loaded.</p>
-</li>
-<li>
-<p><code>Translation</code> Your translation catalog will automatically loaded in this folder.</p>
-</li>
+<li><code>ClassContent</code> This folder contains your content definitions;</li>
+<li><code>Config</code> Here you can find and override each config file of BackBee;</li>
+<li><code>Controller</code> In this folder your controller will be automatically auto-loaded;</li>
+<li><code>Data</code> Folder where every uploaded file is stored. As the cache and log folder, data can be moved out of the project by customizing <code>services.yml</code>;</li>
+<li><code>Layouts</code> Layout templates are stored in this folder;</li>
+<li><code>Listener</code> In this folder your Event Listeners will be automatically loaded;</li>
+<li><code>Resources</code> In this folder you put your static files like images, JS scripts and CSS;</li>
+<li><code>Templates</code> Folder where you put your helpers into <code>helpers</code> subfolder, partials into <code>partials</code> subfolder and ClassContent templates into <code>scripts</code> subfolder;</li>
+<li><code>Traits</code> In this folder your ClassContent's Trait will be automatically loaded;</li>
+<li><code>Translation</code> Your translation catalog will automatically loaded in this folder.</li>
 </ul>
 <h3 id="context-and-repository-folder-overriding">Context and repository folder overriding</h3>
 <p>In BackBee repository folder can be contextualized. You use a contextualized repository when you start your application, it's the first argument in construct method.</p>
