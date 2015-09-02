@@ -357,10 +357,10 @@ will look for Listener in the repository/Config/Listener folder.</p>
                 $renderer = $event-&gt;getEventArgs();
 
                 /* The eventDispatcher */
-                $eventDistacher = $event-&gt;getDispatcher();
+                $eventDispatcher = $event-&gt;getDispatcher();
 
                 /* the BackBee application */
-                $application = $eventDistacher-&gt;getApplication();
+                $application = $eventDispatcher-&gt;getApplication();
 
                 /* The article classcontent */
                 $content = $renderer-&gt;getObject();
