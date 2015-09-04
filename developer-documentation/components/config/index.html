@@ -214,7 +214,7 @@
         
             <li><a href="#the-config-component">The Config Component</a></li>
         
-            <li><a href="#how-the-config-component-work">How the Config component work ?</a></li>
+            <li><a href="#how-the-config-component-works">How the Config component works ?</a></li>
         
             <li><a href="#yaml-parsing-filtering-and-extending">YAML parsing, filtering and extending</a></li>
         
@@ -231,7 +231,7 @@
 <h1 id="components">Components</h1>
 <h2 id="the-config-component">The Config Component</h2>
 <p>This component is used in BackBee to set parameters from YAML files into the Container.</p>
-<h2 id="how-the-config-component-work">How the Config component work ?</h2>
+<h2 id="how-the-config-component-works">How the Config component works ?</h2>
 <p>The BackBee Config Component provides a <code>Config</code> object able to:</p>
 <ul>
 <li>Parse YAML files from a directory;</li>
@@ -264,7 +264,7 @@ class Config implements DispatchTagEventInterface, DumpableServiceInterface
 <p><em>This component is not related and not compatible with Symfony Config component.</em></p>
 <h2 id="yaml-parsing-filtering-and-extending">YAML parsing, filtering and extending</h2>
 <p>The BackBee Config Component can take a valid directory as argument, and merge the configuration according to the data set
-in this YAML files. If you don't know YAML, you can take a look to the <a href="http://symfony.com/doc/current/components/yaml/yaml_format.html">Symfony YAML format documentation</a>.</p>
+in this YAML files. If you don't know YAML, you can take a look at the <a href="http://symfony.com/doc/current/components/yaml/yaml_format.html">Symfony YAML format documentation</a>.</p>
 <p>Moreover, BackBee Config component allows you to ignore some files.</p>
 <pre><code class="php">&lt;?php
 
@@ -285,7 +285,7 @@ class Foo
 
 <p>This way, the ignored files won't be parsed.</p>
 <p>Thanks to the <em>BackBee environments</em>, you can also extend and improve your default configuration.
-For instance, let's say you want to add a specific configuration when your are in a "testing" environment.</p>
+For instance, let's say you want to add a specific configuration when you are in a "testing" environment.</p>
 <p>You can set the environment this way:</p>
 <pre><code class="php">&lt;?php
 
@@ -314,9 +314,9 @@ class Foo
 ?&gt;
 </code></pre>
 
-<p>This is simple and powerful, you can be very specific on the configuration you want to use.
-Configurations keys and parameters are merged recursively, starting from base directory to the environnement directory.
-Thank to the "On cascade system", you can also add a new directory to allow an override of the current configuration.</p>
+<p>This is simple and powerful, you can be very specific about the configuration you want to use.
+Configuration keys and parameters are merged recursively, starting from the base directory to the environnement directory.
+Thanks to the "On cascade system", you can also add a new directory to allow an override of the current configuration.</p>
 <pre><code class="php">&lt;?php
 
 use BackBee\Config\Config;
@@ -357,13 +357,13 @@ thanks to the <code>BackBee\Config\PersistorInterface</code>.</p>
 <ul>
 <li><code>save_in_registry</code> is a particular option: if true, this means BackBee will try to look for an overidden configuration
   stored in Registry.</li>
-<li><code>persistor</code> is the list of activated persistors. BackBee will loop on each and try to find configuration. If no one
+<li><code>persistor</code> is the list of activated persistors. BackBee will loop into each and try to find configuration. If no one
   provides the requested configuration, an exception will be thrown.</li>
 </ul>
 <h2 id="configuration-caching">Configuration caching</h2>
 <p>The BackBee Config Component is fully compatible with BackBee Cache component.</p>
 <p>When you create your Config object, you can pass an instance of <code>BackBee\Cache\AbstractCache</code> as a second argument.
-This way, in non-debug mode (fourth argument, <strong>false</strong> by default), the second time you get the information, the configuration
+This way, in a non-debug mode (fourth argument, <strong>false</strong> by default), the second time you get the information, the configuration
 will be constructed from cache instead of built again from files or database registry.</p>
                 <hr />
                 <div class="contribution-message">
