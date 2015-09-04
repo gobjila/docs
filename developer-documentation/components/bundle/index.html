@@ -235,16 +235,16 @@ While the core application contains many features to build up your website/appli
 <li>ArticleBundle: could be a bundle that brings article classcontent and its views, maybe also some listeners to alter some behaviors.</li>
 <li>DisqusBundle: could simply be an implementation of Disqus API into BackBee.</li>
 </ul>
-<p>Also, if one day you need the Disqus feature in another project that doesn't need the article class content, this will result on embedding unused code. So keep it in mind: <strong>one bundle = one feature</strong>.</p>
+<p>Also, if one day you need the Disqus feature in another project that doesn't need article class content, this will result in embedding unused code. So keep it in mind: <strong>one bundle = one feature</strong>.</p>
 <h2 id="bundle-folder-structure-and-entry-point">Bundle folder structure and entry point</h2>
-<p>A valid bundle should at least have a folder structure that contains an entry point and the <code>Config</code> folder. Considering for this example that our bundle is named NewsletterBundle.</p>
+<p>A valid bundle should at least have a folder structure that contains an entry point and the <code>Config</code> folder. Let's consider, for example, that our bundle is named NewsletterBundle.</p>
 <pre><code>NEWSLETTER_BUNDLE_ROOT_FOLDER
     |_ Config
         |_ config.yml
     |_ Newsletter.php
 </code></pre>
 
-<p>The entry point is essential for BackBee to know how load your bundle. Note that the classname does not matter at all (no any standard to follow) but it must implement <code>BackBee\Bundle\BundleInterface</code>. We highly encourage you to extends <code>BackBee\Bundle\AbstractBundle</code> so you have only <code>::start()</code> and <code>::stop()</code> methods to implement to be ready to go. You will find below a simple implementation of these two methods and we will explain to you how BackBee works and loads your bundles:</p>
+<p>The entry point is essential for BackBee to know how to load your bundle. Note that the classname does not matter at all (no any standard to follow) but it must implement <code>BackBee\Bundle\BundleInterface</code>. We highly encourage you to extend <code>BackBee\Bundle\AbstractBundle</code> so you have only <code>::start()</code> and <code>::stop()</code> methods to implement before you are ready to go. You will find below a simple implementation of these two methods and we will explain to you how BackBee works and loads your bundles:</p>
 <pre><code class="php">namespace BackBee\Bundle\NewsletterBundle;
 
 use BackBee\Bundle\AbstractBundle;
@@ -269,8 +269,8 @@ class Newsletter extends AbstractBundle
 }
 </code></pre>
 
-<p>Explanation: at the first time the bundle is accessed from application service container, its  <code>::start()</code> method will be invoked (so only once). And <code>::stop()</code> will be invoked on every started bundle when the event <code>bbapplication.stop</code>is dispatched.</p>
-<p>The <code>Config/config.yml</code> is also required. It will be parsed to get an instance of <code>BackBee\Config\Config</code>. Here bellow a list of bundle basic configuration parameters:</p>
+<p>Explanation: at the first time the bundle is accessed through application service container, its  <code>::start()</code> method will be invoked (so only once). And <code>::stop()</code> will be invoked in every started bundle when the event <code>bbapplication.stop</code>is dispatched.</p>
+<p>The <code>Config/config.yml</code> is also required. It will be parsed to get an instance of <code>BackBee\Config\Config</code>. Bellow is a list of bundle basic configuration parameters:</p>
 <pre><code class="yaml"># NEWSLETTER_BUNDLE_ROOT_FOLDER/Config/config.yml
 bundle:
     name: NewsLetterBundle
@@ -281,22 +281,22 @@ bundle:
     thumbnail: ~ # the thumbnail of your bundle; default: null
 </code></pre>
 
-<p>So we saw what's a bundle and what is needed to create one. Let's learn how register it to BackBee. You need to create <code>bundles.yml</code> into your project config folder (generally located at <code>PROJECT_ROOT_DIR/repository/Config/</code>):</p>
+<p>Now we have seen what a bundle is and what is needed to create one. Let's learn how to register it to BackBee. You need to create <code>bundles.yml</code> into your project config folder (generally located at <code>PROJECT_ROOT_DIR/repository/Config/</code>):</p>
 <pre><code class="yaml"># PROJECT_ROOT_DIR/repository/Config/bundles.yml
 nl: BackBee\Bundle\NewsletterBundle\Newsletter
 demo: BackBee\Bundle\DemoBundle\Demo
 </code></pre>
 
-<p>That's all! Pretty simple, right? One more thing, bundles are automatically loaded into application service container. Your bundle identifier will always follow this pattern: <code>bundle.__BUNDLE_NAME__</code>. Note that the <code>__BUNDLE_NAME__</code> is the declared key of your bundle, so it's <code>bundle.nl</code> in this case (<code>nl</code> cause it's the key name of the bundle entry point in <code>bundles.yml</code>). You can also access to NewsletterBundle's config from the service container. Its service identifier follow this pattern: <code>bundle.__BUNDLE_NAME__.config</code>. So the NewsletterBundle config identifier is <code>bundle.nl.config</code>.</p>
-<p>Well, now you know the basics about BackBee's bundle. Let's get into the next level and learn more about how BackBee loads your bundles!</p>
+<p>That's all! Pretty simple, right? One more thing, bundles are automatically loaded into the application service container. Your bundle identifier will always follow this pattern: <code>bundle.__BUNDLE_NAME__</code>. Note that the <code>__BUNDLE_NAME__</code> is the declared key of your bundle, so it's <code>bundle.nl</code> in this case (<code>nl</code> cause it's the key name of the bundle entry point in <code>bundles.yml</code>). You can also access to NewsletterBundle's config from the service container. Its service identifier follows this pattern: <code>bundle.__BUNDLE_NAME__.config</code>. So the NewsletterBundle config identifier is <code>bundle.nl.config</code>.</p>
+<p>Well, now you know the basics about BackBee's bundle. Let's move to the next level and learn more about how BackBee loads your bundles!</p>
 <h2 id="how-the-bundle-loader-works">How the bundle loader works?</h2>
-<p>During the execution of <code>BackBee\BBApplication::__construct</code> many things are done. Within it we have the call to the bundle loader. First, BackBee loads its dependencies like its listeners, services, parameters (into dependency injection container), classcontents, etc. Then BackBee says <em>"Well bundle loader, it's time for you to do your job!"</em>.
-The first task the bundle loader do is to get every declared bundle containing by <code>PROJECT_ROOT_DIR/repository/Config/bundles.yml</code> and load them one by one. Note that the order bundles are loaded is determined by declaration order in <code>bundles.yml</code> (in previous example, NewsletterBundle will be loaded first). The order is important cause the last loaded one will always win if there is a conflict about which template to use or which parameter value to use in service container. So <strong>be careful about your bundle declaration order</strong>.</p>
-<p>From now, consider that the current path (<code>./</code>) is <code>__BUNDLE_BASE_DIR__</code>. So <code>./Config/</code> is equal to <code>__BUNDLE_BASE_DIR__/Config/</code>.</p>
+<p>During the execution of <code>BackBee\BBApplication::__construct</code> a lot of things are done. Among them, we have the call to the bundle loader. First, BackBee loads its dependencies like its listeners, services, parameters (into dependency injection container), classcontents, etc. Then BackBee says <em>"Well bundle loader, it's time for you to do your job!"</em>.
+The first task the bundle loader has to do is to get every declared bundle in  <code>PROJECT_ROOT_DIR/repository/Config/bundles.yml</code> file and load them one by one. Note that bundles are loaded is determined by declaration order in <code>bundles.yml</code> (in previous example, NewsletterBundle will be loaded first). The order is important cause the last loaded one will always win if there is a conflict about which template to use or which parameter value to use in service container. So <strong>be careful about your bundle declaration order</strong>.</p>
+<p>From now on, consider that the current path (<code>./</code>) is <code>__BUNDLE_BASE_DIR__</code>. So <code>./Config/</code> is equal to <code>__BUNDLE_BASE_DIR__/Config/</code>.</p>
 <h4 id="default-expectations">Default expectations</h4>
 <p>We are now coming up to talk about bundle default structure expected by the loader:</p>
 <ul>
-<li>services for dependency injection container can be declared in yaml or xml format and is expected to be find into <code>./Config/services.[yml|xml]</code></li>
+<li>services for dependency injection container can be declared in yaml or xml format and are expected to be found in <code>./Config/services.[yml|xml]</code></li>
 <li>events listeners are expected to be declared in <code>./Config/events.yml</code></li>
 <li>routes are expected to be declared in <code>./Config/route.yml</code></li>
 <li>classcontent folder is expected to be <code>./ClassContent/</code></li>
@@ -304,7 +304,7 @@ The first task the bundle loader do is to get every declared bundle containing b
 <li>helpers are expected to be in <code>./Templates/helpers/</code></li>
 <li>resources are expected to be in <code>./Resources/</code></li>
 </ul>
-<p>As long as you follow these standard you won't have anything to do to load your services, events, routes, classcontent, templates, helpers and resources.</p>
+<p>As long as you follow theses standards you won't have anything to do to load your services, events, routes, classcontent, templates, helpers and resources.</p>
 <p>Default bundle folder structure:</p>
 <pre><code>BUNDLE_ROOT_FOLDER
     |_ ClassContent/
@@ -326,9 +326,9 @@ The first task the bundle loader do is to get every declared bundle containing b
 
 </code></pre>
 
-<h4 id="using-recipes-to-custom-some-load">Using recipes to custom some load</h4>
+<h4 id="using-recipes-to-custom-some-loads">Using recipes to custom some loads</h4>
 <p>Admitting that we want to put our templates into <code>./Resources/views/</code> instead of <code>./Templates/scripts/</code> and our helpers into <code>./Renderer/Helper/</code> instead of <code>./Templates/helpers/</code>, how can we do that?
-It's pretty simple if you use bundle loader recipes. They allow you use your custom recipe instead of the default one to load some part of your bundle. To load templates and helpers by ourself, simply add these line into <code>./Config/config.yml</code>:</p>
+It's pretty simple if you use bundle loader recipes. They allow you use your custom recipe instead of the default one to load some part of your bundle. To load templates and helpers by yourself, simply add these line into <code>./Config/config.yml</code>:</p>
 <pre><code class="yaml"># ./Config/config.yml
 bundle:
     enable: true
@@ -340,7 +340,7 @@ bundle:
         template: [BackBee\Bundle\FakeBundle\EntryPoint, loadTemplates]
 </code></pre>
 
-<p>Below an example of how to implements these callbacks into <code>BackBee\Bundle\FakeBundle\EntryPoint</code>:</p>
+<p>Below an example of how to implement these callbacks into <code>BackBee\Bundle\FakeBundle\EntryPoint</code>:</p>
 <pre><code class="php">namespace BackBee\Bundle\FakeBundle;
 
 use BackBee\BBApplication;
@@ -387,7 +387,7 @@ class EntryPoint extends AbstractBundle
 }
 </code></pre>
 
-<p>We just saw how to custom the load of helpers and views. Below the complete list of recipe name bundle loader can interpret:</p>
+<p>We just saw how to custom the loading of helpers and views. Below the complete list of recipes that the name bundle loader can interpret:</p>
 <ul>
 <li><code>classcontent</code></li>
 <li><code>custom</code>: use this one if you want to run custom loader without altering default behavior</li>
