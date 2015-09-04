@@ -230,17 +230,17 @@
 <p><a href="https://en.wikipedia.org/wiki/Nested_set_model">wiki</a></p>
 </blockquote>
 <h3 id="keyword">KeyWord</h3>
-<p>KeyWord entity is hierarchical tree of keywords.</p>
-<p>KeyWord in the CMS are used as keyword, tag and in rare case category. These words can be attach to a <code>ClassContent</code> by using the native content Keyword.</p>
+<p>KeyWord entity is a hierarchical tree of keywords.</p>
+<p>KeyWord in CMS are used as keyword, tag and in rare case category. These words can be attach to a <code>ClassContent</code> by using the native content Keyword.</p>
 <h3 id="media-and-mediafolder">Media and MediaFolder</h3>
-<p>MediaFolder entity is hierarchical tree of folders that contain Media.</p>
-<p>These two objects are used in the Media library and like the KeyWord Object, Media is attached to a ClassContent and more precisely all medias with this namespace <code>BackBee\ClassContent\Media</code></p>
+<p>MediaFolder entity is a hierarchical tree of folders that contain Media.</p>
+<p>These two objects are used in the Media library and like the KeyWord Object, Media is attached to a ClassContent and more precisely all media with this namespace <code>BackBee\ClassContent\Media</code></p>
 <h3 id="page-and-section">Page and Section</h3>
-<p>Page and Section work like respectively Media and MediaFolder. Only Sections are hierarchical entities.</p>
-<p>To lighten the page Nested set model, the BackBee team has decided to make a distinction between pages with children (section) and pages without children (page).</p>
+<p>Page and Section works like Media and MediaFolder. Only Sections are hierarchical entities.</p>
+<p>To lighten the page Nested set model, the BackBee team has decided to make a distinction between pages with children (sections) and pages without children (pages).</p>
 <p>When you create new pages it has a reference to a section. It will automatically become a section when you attach a child to it.</p>
 <h4 id="create-a-page-by-the-code">Create a page by the code</h4>
-<p>To ease page creation, we recommand you to use PageBuilder. See an example below:</p>
+<p>To ease page creation, we recommend you to use PageBuilder. See an example below:</p>
 <pre><code class="php">&lt;?php
 // retrieve an application instanced or create new application
 $app = new \BackBee\Standard\Application();
