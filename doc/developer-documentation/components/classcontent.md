@@ -269,12 +269,22 @@ The second advantage concerns rendering and listeners, BackBee will run through 
 
 Add an event listener to a class content is pretty easy and you will find more information in the [Event Listener component](/developper-documentation/components/event_listener/) section.
 
-To summarize each ClassContent has 5 attached events:
-- prerender
-- onrender
-- postrender
-- preflush
-- onflush
+To summarize each ClassContent has 6 attached events:
+- `classcontent.include`: on the first instantiation of the class content,
+- `classcontent.prerender`: before the content is rendered,
+- `classcontent.render`: during the content is rendered,
+- `classcontent.postrender`: after the content is rendered.
+
+Plus all of the events dispatched by Doctrine:
+- `classcontent.preflush`: before the content entity is flushed,
+- `classcontent.onflush`: during the content entity is flushed,
+- `classcontent.postflush`: after tthe content entity is flushed,
+- `classcontent.postload`: after the content entity was loaded,
+- `classcontent.preremove`: before the content entity is removed,
+- `classcontent.postremove`: after the content entity is removed,
+- `classcontent.prepersist`: before a new content entity is inserted,
+- `classcontent.preupdate`: before a content entity is updated,
+- `classcontent.postupdate`: after a content entity is updated.
 
 #### Add a Trait  to a ClassContent
 
@@ -400,7 +410,125 @@ $param = $content->getParamValue('mytext')
 // That returns a new value set  string 'foo' (length=3)
 ```
 
-### Parameters reference
+## Properties reference
+
+* name
+* description
+* category
+* indexation
+* labelized-by
+* iconized-by
+
+***
+
+### name
+
+The name of the content
+
+ |   | Type | Description | Default | Mandatory
+--- | --- | --- | --- | ---
+**name** |  String | The name of the content | Empty string | No |
+
+**Example**:
+```yaml
+properties:
+    name: Article
+```
+
+```php
+<?php
+$name = $content->getProperty('name'); // "Article"
+```
+***
+
+### description
+
+The description of the content
+
+ |   | Type | Description | Default | Mandatory
+--- | --- | --- | --- | ---
+**description** |  String | The description of the content | Empty string | No |
+
+**Example**:
+```yaml
+properties:
+    description: "An article contains a title, an author, an abstract, a primary image and a body"
+```
+
+```php
+<?php
+$name = $content->getProperty('description'); // "An article contains a title, an author, an abstract, a primary image and a body"
+```
+***
+
+### category
+
+Used to categorize the content.
+
+ |   | Type | Description | Default | Mandatory
+--- | --- | --- | --- | ---
+**category** |  Array | An array content categories  | Empty array | No |
+
+**Example**:
+```yaml
+properties:
+    category: [Article, News]
+```
+***
+
+### indexation
+
+List of references to chained elements or parameters to be indexed on content entity flush.
+
+Each of the listed elements or parameters can be associated to a callback function.
+
+A reference to a parameter will be prefixed by `@`.
+
+ |   | Type | Description | Default | Mandatory
+--- | --- | --- | --- | ---
+**indexation** |  Array | An array of chained elements or parameters  | Empty array | No |
+
+**Example**:
+```yaml
+properties:
+    indexation: [[title->value, strip_tags], [@isNews]]
+```
+***
+
+### labelized-by
+
+A reference to a chained element that will be used to labelize the content.
+
+ |   | Type | Description | Default | Mandatory
+--- | --- | --- | --- | ---
+**labelized-by** |  String | A reference to a chained element  | Empty string | No |
+
+**Example**:
+```yaml
+properties:
+    labelized-by: title->value
+```
+***
+
+### iconized-by
+
+A reference to a chained element or parameter that will be used to get an icon for the content.
+
+The URI of the icon will be resolved according to the `routing` component rules.
+
+A reference to a parameter will be prefixed by `@`.
+
+ |   | Type | Description | Default | Mandatory
+--- | --- | --- | --- | ---
+**iconized-by** |  String | A reference to a chained element or parameter  | Empty string | No |
+
+**Example**:
+```yaml
+properties:
+    iconized-by: image->image->path
+```
+
+## Parameters reference
 
 * checkbox
 * datetimepicker
@@ -416,7 +544,7 @@ $param = $content->getParamValue('mytext')
 
 All parameters have default options:
 
-#### Default options
+### Default options
 
  |   | Type | Description | Default | Mandatory
 --- | --- | --- | --- | ---
@@ -426,7 +554,7 @@ All parameters have default options:
 
 ***
 
-#### Checkbox
+### Checkbox
 
 Like HTML checkbox attribute
 
@@ -455,7 +583,7 @@ $param = $content->getParamValue('mycheckbox'); // sarray('foo')
 ```
 ***
 
-#### Datetime picker
+### Datetime picker
 
 Text element with a datetimepicker
 
@@ -479,7 +607,7 @@ $param = $content->getParamValue('mydatetimepicker'); // 1435573740
 
 ***
 
-#### Hidden
+### Hidden
 
 Like HTML hidden attribute
 
@@ -503,7 +631,7 @@ $param = $content->getParamValue('myhidden'); // foo
 
 ***
 
-#### Link selector
+### Link selector
 
 Link selector allows you to choose a link from one of your website pages or an external link.
 
@@ -534,7 +662,7 @@ In this case, note the pageUid attribute is (obviously) null.
 
 ***
 
-#### Media selector
+### Media selector
 
 Media selector allows you to choose a list of media in the media library.
 
@@ -560,7 +688,7 @@ $param = $content->getParamValue('mymediaselector');
 
 ***
 
-#### Node selector
+### Node selector
 
 Node selector allows you to choose a page from tree
 
@@ -586,7 +714,7 @@ We recommend retrieving the title from the page entity instead of the attributed
 
 ***
 
-#### Password
+### Password
 
 Like HTML password attribute
 
@@ -609,7 +737,7 @@ $param = $content->getParamValue('mypassword'); // foo
 ```
 ***
 
-#### Radio
+### Radio
 
 Like HTML radio attribute
 
@@ -638,7 +766,7 @@ $param = $content->getParamValue('myradio'); // array('foo')
 ```
 ***
 
-#### Select
+### Select
 
 Like HTML select attribute
 
@@ -668,7 +796,7 @@ $param = $content->getParamValue('myradio'); //array('foo')
 
 ***
 
-#### Text
+### Text
 
 Like HTML text attribute
 
@@ -691,7 +819,7 @@ $param = $content->getParamValue('mypassword'); // foo
 ```
 ***
 
-#### Textarea
+### Textarea
 
 Like HTML textearea attribute
 
@@ -716,9 +844,9 @@ $param = $content->getParamValue('mytextearea'); // BackBee
 ```
 ***
 
-#### Special parameters
+### Special parameters
 
-##### Rendermode
+#### Rendermode
 
 Rendermode parameters automatically list rendermodes of content and use them directly.
 
