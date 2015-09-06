@@ -269,7 +269,7 @@ The second advantage concerns rendering and listeners, BackBee will run through 
 
 Add an event listener to a class content is pretty easy and you will find more information in the [Event Listener component](/developper-documentation/components/event_listener/) section.
 
-To summarize each ClassContent has 6 attached events:
+To summarize each ClassContent has 4 attached events:
 - `classcontent.include`: on the first instantiation of the class content,
 - `classcontent.prerender`: before the content is rendered,
 - `classcontent.render`: during the content is rendered,
