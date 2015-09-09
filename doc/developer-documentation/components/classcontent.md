@@ -510,6 +510,7 @@ Link selector allows you to choose a link from one of your website pages or an e
  |   | Type | Description | Default | Mandatory
 --- | --- | --- | --- | ---
 **value** | Json | Object which contains url / title / pageUid / target  | Empty array | Yes |
+**max_entry** | Integer | Allow to restrict number of link | null | No |
 
 **Example**:
 
@@ -541,6 +542,7 @@ Media selector allows you to choose a list of media in the media library.
  |   | Type | Description | Default | Mandatory
 --- | --- | --- | --- | ---
 **value** | Json | Object which contains folder_uid / image / media_id / title /type / uid  | Empty array | Yes |
+**max_entry** | Integer | Allow to restrict number of media | null | No |
 
 **Example**:
 
@@ -567,6 +569,7 @@ Node selector allows you to choose a page from tree
  |   | Type | Description | Default | Mandatory
 --- | --- | --- | --- | ---
 **value** | Json | Object which contains url  pageUid / title  | Empty array | Yes |
+**max_entry** | Integer | Allow to restrict number of node | null | No |
 
 **Example**:
 
