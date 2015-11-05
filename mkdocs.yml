@@ -23,6 +23,7 @@ pages:
         - 'Ease debugging with the Web Profiler': 'developer-documentation/cookbooks/ease_debugging_with_profiler.md'
         - 'Use Swift Mailer in BackBee': 'developer-documentation/cookbooks/use_swift_mailer_in_backbee.md'
         - 'Layout creation using LayoutBuilderBundle': 'developer-documentation/cookbooks/layout_creation.md'
+        - 'Implement Doctrine Commands Console': 'developer-documentation/cookbooks/use_doctrine_commands_console.md'
     - 'Components':
         - 'Bundle': 'developer-documentation/components/bundle.md'
         - 'Cache': 'developer-documentation/components/cache.md'
