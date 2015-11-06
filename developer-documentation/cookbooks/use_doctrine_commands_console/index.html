@@ -6,10 +6,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         
-        <link rel="canonical" href="http://www.backbee.com/developer-documentation/components/config/">
+        <link rel="canonical" href="http://www.backbee.com/developer-documentation/cookbooks/use_doctrine_commands_console/">
         <link rel="shortcut icon" href="../../../img/favicon.ico">
 
-        <title>Config - The BackBee documentation</title>
+        <title>Implement Doctrine Commands Console - The BackBee documentation</title>
 
         <link href="../../../css/gen.css" rel="stylesheet">
 
@@ -92,40 +92,40 @@
             
             
             
-                <li class="dropdown">
+                <li class="dropdown active">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Cookbooks <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                     
                         <li >
-                            <a href="../../cookbooks/create_bundle_administration/">Create bundle administration</a>
+                            <a href="../create_bundle_administration/">Create bundle administration</a>
                         </li>
                     
                         <li >
-                            <a href="../../cookbooks/create_new_commands/">Create new commands</a>
+                            <a href="../create_new_commands/">Create new commands</a>
                         </li>
                     
                         <li >
-                            <a href="../../cookbooks/create_new_templating_helpers/">Create new templating helpers</a>
+                            <a href="../create_new_templating_helpers/">Create new templating helpers</a>
                         </li>
                     
                         <li >
-                            <a href="../../cookbooks/customize_error_pages/">Customize error pages</a>
+                            <a href="../customize_error_pages/">Customize error pages</a>
                         </li>
                     
                         <li >
-                            <a href="../../cookbooks/ease_debugging_with_profiler/">Ease debugging with the Web Profiler</a>
+                            <a href="../ease_debugging_with_profiler/">Ease debugging with the Web Profiler</a>
                         </li>
                     
                         <li >
-                            <a href="../../cookbooks/use_swift_mailer_in_backbee/">Use Swift Mailer in BackBee</a>
+                            <a href="../use_swift_mailer_in_backbee/">Use Swift Mailer in BackBee</a>
                         </li>
                     
                         <li >
-                            <a href="../../cookbooks/layout_creation/">Layout creation using LayoutBuilderBundle</a>
+                            <a href="../layout_creation/">Layout creation using LayoutBuilderBundle</a>
                         </li>
                     
-                        <li >
-                            <a href="../../cookbooks/use_doctrine_commands_console/">Implement Doctrine Commands Console</a>
+                        <li class="active">
+                            <a href="./">Implement Doctrine Commands Console</a>
                         </li>
                     
                     </ul>
@@ -133,48 +133,48 @@
             
             
             
-                <li class="dropdown active">
+                <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Components <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                     
                         <li >
-                            <a href="../bundle/">Bundle</a>
+                            <a href="../../components/bundle/">Bundle</a>
                         </li>
                     
                         <li >
-                            <a href="../cache/">Cache</a>
+                            <a href="../../components/cache/">Cache</a>
                         </li>
                     
                         <li >
-                            <a href="../classcontent/">ClassContent</a>
-                        </li>
-                    
-                        <li class="active">
-                            <a href="./">Config</a>
+                            <a href="../../components/classcontent/">ClassContent</a>
                         </li>
                     
                         <li >
-                            <a href="../event_listener/">Event Listener</a>
+                            <a href="../../components/config/">Config</a>
                         </li>
                     
                         <li >
-                            <a href="../nested_node/">Nested Node</a>
+                            <a href="../../components/event_listener/">Event Listener</a>
                         </li>
                     
                         <li >
-                            <a href="../renderer/">Renderer</a>
+                            <a href="../../components/nested_node/">Nested Node</a>
                         </li>
                     
                         <li >
-                            <a href="../routing/">Routing</a>
+                            <a href="../../components/renderer/">Renderer</a>
                         </li>
                     
                         <li >
-                            <a href="../security/">Security</a>
+                            <a href="../../components/routing/">Routing</a>
                         </li>
                     
                         <li >
-                            <a href="../translation/">Translation</a>
+                            <a href="../../components/security/">Security</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../../components/translation/">Translation</a>
                         </li>
                     
                     </ul>
@@ -186,12 +186,12 @@
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
                 <li >
-                    <a rel="next" href="../classcontent/">
+                    <a rel="next" href="../layout_creation/">
                         <i class="fa fa-arrow-left"></i> Previous
                     </a>
                 </li>
                 <li >
-                    <a rel="prev" href="../event_listener/">
+                    <a rel="prev" href="../../components/bundle/">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -214,17 +214,9 @@
             <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#components">Components</a></li>
+        <li class="main active"><a href="#cookbooks">CookBooks</a></li>
         
-            <li><a href="#the-config-component">The Config Component</a></li>
-        
-            <li><a href="#how-the-config-component-works">How the Config component works ?</a></li>
-        
-            <li><a href="#yaml-parsing-filtering-and-extending">YAML parsing, filtering and extending</a></li>
-        
-            <li><a href="#configuration-persisting">Configuration persisting</a></li>
-        
-            <li><a href="#configuration-caching">Configuration caching</a></li>
+            <li><a href="#implement-doctrine-commands-console">Implement doctrine commands console</a></li>
         
     
     </ul>
@@ -232,143 +224,60 @@
             <div class="col-md-9" role="main">
                 
 
-<h1 id="components">Components</h1>
-<h2 id="the-config-component">The Config Component</h2>
-<p>This component is used in BackBee to set parameters from YAML files into the Container.</p>
-<h2 id="how-the-config-component-works">How the Config component works ?</h2>
-<p>The BackBee Config Component provides a <code>Config</code> object able to:</p>
-<ul>
-<li>Parse YAML files from a directory;</li>
-<li>Persist this configuration in file or in database;</li>
-<li>Set this configuration in <code>BackBee Container</code>;</li>
-<li>Save and load configuration from <code>BackBee Cache</code>;</li>
-</ul>
+<h1 id="cookbooks">CookBooks</h1>
+<h2 id="implement-doctrine-commands-console">Implement doctrine commands console</h2>
+<h3 id="configuration">Configuration :</h3>
+<p>To use doctrine command console in your Backbee project:</p>
+<ol>
+<li>Create this structure in your app root folder :</li>
+</ol>
+<pre><code class="shell">/bin/doctrine
+/bin/config/cli-config.php
+/bin/src/bootstrap.php
+</code></pre>
+
+<p>Where <code>doctrine</code> is a symbolic link to the doctrine vendor command:</p>
+<pre><code class="shell">ln -s ../vendor/bin/doctrine
+</code></pre>
+
+<p>And <code>cli-config.php</code> contains the following code:</p>
 <pre><code class="php">&lt;?php
 
-use BackBee\Cache\AbstractCache;
-use BackBee\Config\Config;
-use BackBee\DependencyInjection\Container;
-use BackBee\DependencyInjection\DispatchTagEventInterface;
-use BackBee\DependencyInjection\Dumper\DumpableServiceInterface;
+// Doctrine CLI configuration file
+use Doctrine\ORM\Tools\Console\ConsoleRunner;
 
-class Config implements DispatchTagEventInterface, DumpableServiceInterface
-{
-    public function __construct(
-        $basedir,
-        AbstractCache $cache = null,
-        Container $container = null,
-        $debug = false,
-        array $yml_to_ignore = []
-    ){/*..*/}
-}
-
-?&gt;
+require_once __DIR__ . '/../src/bootstrap.php';
+return ConsoleRunner::createHelperSet($entityManager);
 </code></pre>
 
-<p><em>This component is not related and not compatible with Symfony Config component.</em></p>
-<h2 id="yaml-parsing-filtering-and-extending">YAML parsing, filtering and extending</h2>
-<p>The BackBee Config Component can take a valid directory as argument, and merge the configuration according to the data set
-in this YAML files. If you don't know YAML, you can take a look at the <a href="http://symfony.com/doc/current/components/yaml/yaml_format.html">Symfony YAML format documentation</a>.</p>
-<p>Moreover, BackBee Config component allows you to ignore some files.</p>
+<p>And <code>bootstrap.php</code> contains the following code:</p>
 <pre><code class="php">&lt;?php
 
-use BackBee\Config\Config;
+use Doctrine\ORM\Tools\Setup;
 
-class Foo
-{
-    const DIRECTORY = '/my-valid/path';
-
-    public function returnConfiguration(array $filesToIgnore)
-    {
-        return new Config(self::DIRECTORY, null, null, false, $filesToIgnore);
-    }
-}
-
-?&gt;
+require_once &quot;../vendor/autoload.php&quot;;
+// Create a simple &quot;default&quot; Doctrine ORM configuration for XML Mapping
+$isDevMode = true;
+$config = Setup::createAnnotationMetadataConfiguration(array(__DIR__ . &quot;/src&quot;), $isDevMode);
+// or if you prefer yaml or annotations
+//$config = Setup::createXMLMetadataConfiguration(array(__DIR__.&quot;/config/xml&quot;), $isDevMode);
+//$config = Setup::createYAMLMetadataConfiguration(array(__DIR__.&quot;/config/yaml&quot;), $isDevMode);
+// database configuration parameters
+$conn = array(
+    'driver' =&gt; 'pdo_sqlite',
+    'path' =&gt; __DIR__ . '/db.sqlite',
+);
+// obtaining the entity manager
+$entityManager = \Doctrine\ORM\EntityManager::create($conn, $config);
 </code></pre>
 
-<p>This way, the ignored files won't be parsed.</p>
-<p>Thanks to the <em>BackBee environments</em>, you can also extend and improve your default configuration.
-For instance, let's say you want to add a specific configuration when you are in a "testing" environment.</p>
-<p>You can set the environment this way:</p>
-<pre><code class="php">&lt;?php
-
-use BackBee\Config\Config;
-
-class Foo
-{
-    const DIRECTORY = '/my-valid/path';
-
-    public function TestingConfiguration()
-    {
-        $config = new Config('/repository/Config', null, null, false, []);
-
-        return $config-&gt;setEnvironment('testing');
-
-        /**
-         * Now the object is able to parse YAML files from theses directories:
-         * /repository/Config
-         * /repository/Config/testing
-         * and we are also able to parse specific &quot;environment files&quot;:
-         * /repository/Config/foo.testing.yml
-         */
-    }
-}
-
-?&gt;
+<p>You should then be able from the <code>bin</code> folder to use the doctrine console command:</p>
+<pre><code class="shell">#&gt; ./doctrine
 </code></pre>
 
-<p>This is simple and powerful, you can be very specific about the configuration you want to use.
-Configuration keys and parameters are merged recursively, starting from the base directory to the environnement directory.
-Thanks to the "On cascade system", you can also add a new directory to allow an override of the current configuration.</p>
-<pre><code class="php">&lt;?php
-
-use BackBee\Config\Config;
-
-class Foo
-{
-    const DIRECTORY = '/my-valid/path';
-
-    public function overrideTestingConfiguration(Config $config, $directory)
-    {
-        return $config-&gt;extend($directory);
-
-        /**
-         * Now the object is able to parse YAML files from theses directories:
-         * /repository/Config/&lt;$directory&gt;
-         * If a key is declared in &lt;$directory&gt; configuration files, the configuration is overriden
-         */
-    }
-}
-
-?&gt;
-</code></pre>
-
-<h2 id="configuration-persisting">Configuration persisting</h2>
-<p>The BackBee Config Component can persist configurations in file or in database, you can also create your own "persistors"
-thanks to the <code>BackBee\Config\PersistorInterface</code>.</p>
-<p>For now, two persistors are provided in BackBee CMS:</p>
-<ul>
-<li>the <strong>File</strong> Persistor allows you to write and override the main configuration file (config.yml)</li>
-<li>the <strong>Registry</strong> Persistor is a simple database Key/Value system</li>
-</ul>
-<p>If we take a look at the BackBee CMS configuration:</p>
-<pre><code class="yaml">config:
-    save_in_registry: true # default value: true
-    persistor: [BackBee\Config\Persistor\File, BackBee\Config\Persistor\Registry]
-</code></pre>
-
-<ul>
-<li><code>save_in_registry</code> is a particular option: if true, this means BackBee will try to look for an overidden configuration
-  stored in Registry.</li>
-<li><code>persistor</code> is the list of activated persistors. BackBee will loop into each and try to find configuration. If no one
-  provides the requested configuration, an exception will be thrown.</li>
-</ul>
-<h2 id="configuration-caching">Configuration caching</h2>
-<p>The BackBee Config Component is fully compatible with BackBee Cache component.</p>
-<p>When you create your Config object, you can pass an instance of <code>BackBee\Cache\AbstractCache</code> as a second argument.
-This way, in a non-debug mode (fourth argument, <strong>false</strong> by default), the second time you get the information, the configuration
-will be constructed from cache instead of built again from files or database registry.</p>
+<blockquote>
+<p>For up-to-date <code>cli-config.php</code> and <code>bootstrap.php</code> files check the GIT repo @ https://github.com/doctrine/doctrine2-orm-tutorial.</p>
+</blockquote>
                 <hr />
                 <div class="contribution-message">
     <h2>Is something missing?</h2>
