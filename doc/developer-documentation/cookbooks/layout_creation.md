@@ -76,7 +76,7 @@ This is to highlight your main column into your layout. MainColumn option permit
 
 ##### Column -> accept setting
 
-This option permit to filter what type you can put into your column. In the case of the LandingPage layout we accept every type of content. But we can filter that and only accept for example an `BackBee\ClassContent\Landing\Contentainer`:
+This option permit to filter what type you can put into your column. In the case of the LandingPage layout we accept every type of content. But we can filter that and only accept for example an `BackBee\ClassContent\Landing\Container`:
 
 ```yml
 accept: ['Landing\Container']
@@ -88,10 +88,10 @@ That option permit to add a maximum type of accepted content into the page. The 
 
 ##### Column -> defaultClassContent setting
 
-The default ClassContent setting permit to initialize the layout with the entity provided. Example like `accept` setting. To initialize the layout with the entity `BackBee\ClassContent\Landing\Contentainer`, you have to write:
+The default ClassContent setting permit to initialize the layout with the entity provided. Example like `accept` setting. To initialize the layout with the entity `BackBee\ClassContent\Landing\Container`, you have to write:
 
 ```yml
-defaultClassContent: Landing\Contentainer
+defaultClassContent: Landing\Container
 ```
 
 ##### Column -> inherited setting
