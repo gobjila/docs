@@ -60,7 +60,7 @@ Here, we register the listener *HelloListener* to be executed when the event `lo
     ?>
 ```
 
-Notice that the event object has access to the `application` *via* the `EventDispacher` and that the `sayHello` is a *static* method.
+> Notice that the event object has access to the `application` *via* the `EventDispacher` and that the `sayHello` is a *static* method.
 
 ## Event Dispatcher
 
@@ -80,7 +80,7 @@ the static `sayHello` method of the `Backbee/Event/Listener/HelloListener` will 
 
 ## Events from Class Content Component
 
-One of the main purposes of `Backbee` is to render contents. As we have seen, 
+One of the main purposes of `Backbee` is to render contents. As we have seen,
 content is defined in a `.yml` file. Content creation and content rendering goes
 through many phases that `Backbee` exposes with events. For instance, an event is triggered
 when a content is created, before and after a content has been saved, when the rendering process starts, while the content is been rendered, after the renderer process and so on. These events
