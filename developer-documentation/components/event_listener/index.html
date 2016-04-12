@@ -124,10 +124,6 @@
                             <a href="../../cookbooks/layout_creation/">Layout creation using LayoutBuilderBundle</a>
                         </li>
                     
-                        <li >
-                            <a href="../../cookbooks/use_doctrine_commands_console/">Implement Doctrine Commands Console</a>
-                        </li>
-                    
                     </ul>
                 </li>
             
@@ -287,7 +283,9 @@ is a class path and the second is a method. The last parameter is the priority o
     ?&gt;
 </code></pre>
 
+<blockquote>
 <p>Notice that the event object has access to the <code>application</code> <em>via</em> the <code>EventDispacher</code> and that the <code>sayHello</code> is a <em>static</em> method.</p>
+</blockquote>
 <h2 id="event-dispatcher">Event Dispatcher</h2>
 <p><code>Namespace: BackBee\Event\EventListener</code></p>
 <p>Events are <em>dispatched</em> or <em>triggered</em> by the <code>EventDispatcher</code> by using the method <code>triggerEvent</code>. The sample bellow shows how to listen to an event.</p>
@@ -299,7 +297,7 @@ is a class path and the second is a method. The last parameter is the priority o
 <p>When the <em>loading.event</em> is dispatched by the <code>EventDispatcher</code>, all the registered listeners will be executed. In our example,
 the static <code>sayHello</code> method of the <code>Backbee/Event/Listener/HelloListener</code> will be called.</p>
 <h2 id="events-from-class-content-component">Events from Class Content Component</h2>
-<p>One of the main purposes of <code>Backbee</code> is to render contents. As we have seen, 
+<p>One of the main purposes of <code>Backbee</code> is to render contents. As we have seen,
 content is defined in a <code>.yml</code> file. Content creation and content rendering goes
 through many phases that <code>Backbee</code> exposes with events. For instance, an event is triggered
 when a content is created, before and after a content has been saved, when the rendering process starts, while the content is been rendered, after the renderer process and so on. These events

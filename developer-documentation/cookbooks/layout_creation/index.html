@@ -124,10 +124,6 @@
                             <a href="./">Layout creation using LayoutBuilderBundle</a>
                         </li>
                     
-                        <li >
-                            <a href="../use_doctrine_commands_console/">Implement Doctrine Commands Console</a>
-                        </li>
-                    
                     </ul>
                 </li>
             
@@ -191,7 +187,7 @@
                     </a>
                 </li>
                 <li >
-                    <a rel="prev" href="../use_doctrine_commands_console/">
+                    <a rel="prev" href="../../components/bundle/">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -279,15 +275,15 @@ columns:
 <h5 id="column-mainzone-setting">Column -&gt; mainZone setting</h5>
 <p>This is to highlight your main column into your layout. MainColumn option permit to BackBee that create a direct link behind the page (and the URL) and the content contained into the main column. Each layout must have one unique main column.</p>
 <h5 id="column-accept-setting">Column -&gt; accept setting</h5>
-<p>This option permit to filter what type you can put into your column. In the case of the LandingPage layout we accept every type of content. But we can filter that and only accept for example an <code>BackBee\ClassContent\Landing\Contentainer</code>:</p>
+<p>This option permit to filter what type you can put into your column. In the case of the LandingPage layout we accept every type of content. But we can filter that and only accept for example an <code>BackBee\ClassContent\Landing\Container</code>:</p>
 <pre><code class="yml">accept: ['Landing\Container']
 </code></pre>
 
 <h5 id="column-maxentry-setting">Column -&gt; maxentry setting</h5>
 <p>That option permit to add a maximum type of accepted content into the page. The default value and 0 is equal to unlimited.</p>
 <h5 id="column-defaultclasscontent-setting">Column -&gt; defaultClassContent setting</h5>
-<p>The default ClassContent setting permit to initialize the layout with the entity provided. Example like <code>accept</code> setting. To initialize the layout with the entity <code>BackBee\ClassContent\Landing\Contentainer</code>, you have to write:</p>
-<pre><code class="yml">defaultClassContent: Landing\Contentainer
+<p>The default ClassContent setting permit to initialize the layout with the entity provided. Example like <code>accept</code> setting. To initialize the layout with the entity <code>BackBee\ClassContent\Landing\Container</code>, you have to write:</p>
+<pre><code class="yml">defaultClassContent: Landing\Container
 </code></pre>
 
 <h5 id="column-inherited-setting">Column -&gt; inherited setting</h5>
