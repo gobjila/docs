@@ -1,6 +1,6 @@
 # Introduction
 
-![Docs introduction](img/tutorial_introduction.jpg "Docs introduction")
+![Docs introduction](img/tutorial_introduction.png "Docs introduction")
 
 ## What is BackBee ?
 
