@@ -40,15 +40,15 @@ From the `public` directory, launch the builtin server of PHP:
 
 To see the first installation step of BackBee, go to [http://blogbee.dev:8000/install.php](http://blogbee.dev:8000/install.php) with your favorite web browser:
 
-![BackBee Installer - first step](http://i.imgur.com/saok4nc.png "BackBee Installer - first step")
+![BackBee Installer - first step](http://i.imgur.com/YCxW3ei.png "BackBee Installer - first step")
 
-You need to create `cache/` and `log/` folders with the correct rights. BackBee also need the right to write into the `public/` folder. Refresh and modify your environment until everything is green so you can go to the **second step**.
+The `cache/`, `log/`, `repository/Data/`, `public/` and `repository/Config` folders must be owned by the apache or nginx user. If this user is unknown then set the rights to `0777`. Refresh and modify your environment until everything is green so you can go to the **second step**.
 
 ### Step 2 - General application configuration
 
 ![BackBee Installer - step 2](http://i.imgur.com/pvaDJIH.png "BackBee Installer - step 2")
 
-If required, check the `repository/Config` folder rights and then go to the **third** step.
+If required, set folder rights to be `0777` for `repository/Config` and then go to the **third** step.
 
 ### Step 3 - Database and super admin configurations
 
@@ -95,3 +95,15 @@ If you want to load some fixtures, you can run this command from your project ro
     $ ./backbee fake:data:generate --article-limit 20 --category-limit 5
 
 You can choose the number of articles and categories to generate by respectively changing `20` and `5`.
+
+## Ubuntu and PHP's sessions
+
+If your operating system is Ubuntu, you might meet the following error while PHP is trying to write its sessions:
+
+```
+SessionHandler::read(): open(/var/lib/php5/sessions/sess_ne8pqe6qshr0hc6sn9nrmhpfc5, O_RDWR) failed: Permission denied (13) in /var/www/html/bb/vendor/symfony/http-foundation/Symfony/Component/HttpFoundation/Session/Storage/Proxy/SessionHandlerProxy.php on line 69
+```
+
+This is due to the user which executes PHP. He has not the right to write in the session's storage folder. You can solve this by using the command `chmod` or changing the session storage folder.
+
+You can also take a look at [puphpet/puphpet#1195](https://github.com/puphpet/puphpet/issues/1195) to learn more about this issue.
