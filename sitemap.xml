@@ -4,7 +4,7 @@
     
     <url>
      <loc>http://www.backbee.com//</loc>
-     <lastmod>2016-04-21</lastmod>
+     <lastmod>2016-05-02</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -13,31 +13,31 @@
         
     <url>
      <loc>http://www.backbee.com//developer-documentation/requirements/</loc>
-     <lastmod>2016-04-21</lastmod>
+     <lastmod>2016-05-02</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>http://www.backbee.com//developer-documentation/installation/</loc>
-     <lastmod>2016-04-21</lastmod>
+     <lastmod>2016-05-02</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>http://www.backbee.com//developer-documentation/architecture/</loc>
-     <lastmod>2016-04-21</lastmod>
+     <lastmod>2016-05-02</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>http://www.backbee.com//developer-documentation/configuration/</loc>
-     <lastmod>2016-04-21</lastmod>
+     <lastmod>2016-05-02</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>http://www.backbee.com//developer-documentation/project_architecture/</loc>
-     <lastmod>2016-04-21</lastmod>
+     <lastmod>2016-05-02</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
@@ -47,43 +47,43 @@
         
     <url>
      <loc>http://www.backbee.com//developer-documentation/cookbooks/create_bundle_administration/</loc>
-     <lastmod>2016-04-21</lastmod>
+     <lastmod>2016-05-02</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>http://www.backbee.com//developer-documentation/cookbooks/create_new_commands/</loc>
-     <lastmod>2016-04-21</lastmod>
+     <lastmod>2016-05-02</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>http://www.backbee.com//developer-documentation/cookbooks/create_new_templating_helpers/</loc>
-     <lastmod>2016-04-21</lastmod>
+     <lastmod>2016-05-02</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>http://www.backbee.com//developer-documentation/cookbooks/customize_error_pages/</loc>
-     <lastmod>2016-04-21</lastmod>
+     <lastmod>2016-05-02</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>http://www.backbee.com//developer-documentation/cookbooks/ease_debugging_with_profiler/</loc>
-     <lastmod>2016-04-21</lastmod>
+     <lastmod>2016-05-02</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>http://www.backbee.com//developer-documentation/cookbooks/use_swift_mailer_in_backbee/</loc>
-     <lastmod>2016-04-21</lastmod>
+     <lastmod>2016-05-02</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>http://www.backbee.com//developer-documentation/cookbooks/layout_creation/</loc>
-     <lastmod>2016-04-21</lastmod>
+     <lastmod>2016-05-02</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
@@ -93,61 +93,61 @@
         
     <url>
      <loc>http://www.backbee.com//developer-documentation/components/bundle/</loc>
-     <lastmod>2016-04-21</lastmod>
+     <lastmod>2016-05-02</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>http://www.backbee.com//developer-documentation/components/cache/</loc>
-     <lastmod>2016-04-21</lastmod>
+     <lastmod>2016-05-02</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>http://www.backbee.com//developer-documentation/components/classcontent/</loc>
-     <lastmod>2016-04-21</lastmod>
+     <lastmod>2016-05-02</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>http://www.backbee.com//developer-documentation/components/config/</loc>
-     <lastmod>2016-04-21</lastmod>
+     <lastmod>2016-05-02</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>http://www.backbee.com//developer-documentation/components/event_listener/</loc>
-     <lastmod>2016-04-21</lastmod>
+     <lastmod>2016-05-02</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>http://www.backbee.com//developer-documentation/components/nested_node/</loc>
-     <lastmod>2016-04-21</lastmod>
+     <lastmod>2016-05-02</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>http://www.backbee.com//developer-documentation/components/renderer/</loc>
-     <lastmod>2016-04-21</lastmod>
+     <lastmod>2016-05-02</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>http://www.backbee.com//developer-documentation/components/routing/</loc>
-     <lastmod>2016-04-21</lastmod>
+     <lastmod>2016-05-02</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>http://www.backbee.com//developer-documentation/components/security/</loc>
-     <lastmod>2016-04-21</lastmod>
+     <lastmod>2016-05-02</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>http://www.backbee.com//developer-documentation/components/translation/</loc>
-     <lastmod>2016-04-21</lastmod>
+     <lastmod>2016-05-02</lastmod>
      <changefreq>daily</changefreq>
     </url>
         

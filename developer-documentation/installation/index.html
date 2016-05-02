@@ -218,6 +218,8 @@
         
             <li><a href="#category-and-article-fixtures">Category and article fixtures</a></li>
         
+            <li><a href="#ubuntu-and-phps-sessions">Ubuntu and PHP's sessions</a></li>
+        
     
     </ul>
 </div></div>
@@ -248,11 +250,11 @@ On Unix/Linux based OS, you can add it into <code>/etc/hosts</code> file. In our
 </code></pre>
 <h3 id="step-1-requirements-checks">Step 1 - Requirements checks</h3>
 <p>To see the first installation step of BackBee, go to <a href="http://blogbee.dev:8000/install.php">http://blogbee.dev:8000/install.php</a> with your favorite web browser:</p>
-<p><img alt="BackBee Installer - first step" src="http://i.imgur.com/saok4nc.png" title="BackBee Installer - first step" /></p>
-<p>You need to create <code>cache/</code> and <code>log/</code> folders with the correct rights. BackBee also need the right to write into the <code>public/</code> folder. Refresh and modify your environment until everything is green so you can go to the <strong>second step</strong>.</p>
+<p><img alt="BackBee Installer - first step" src="http://i.imgur.com/YCxW3ei.png" title="BackBee Installer - first step" /></p>
+<p>The <code>cache/</code>, <code>log/</code>, <code>repository/Data/</code>, <code>public/</code> and <code>repository/Config</code> folders must be owned by the apache or nginx user. If this user is unknown then set the rights to <code>0777</code>. Refresh and modify your environment until everything is green so you can go to the <strong>second step</strong>.</p>
 <h3 id="step-2-general-application-configuration">Step 2 - General application configuration</h3>
 <p><img alt="BackBee Installer - step 2" src="http://i.imgur.com/pvaDJIH.png" title="BackBee Installer - step 2" /></p>
-<p>If required, check the <code>repository/Config</code> folder rights and then go to the <strong>third</strong> step.</p>
+<p>If required, set folder rights to be <code>0777</code> for <code>repository/Config</code> and then go to the <strong>third</strong> step.</p>
 <h3 id="step-3-database-and-super-admin-configurations">Step 3 - Database and super admin configurations</h3>
 <p>BackBee Installer automatically creates and populates the database. The only thing you have to do is to set your database settings. Note that we highly recommend to use MySQL or MariaDB.</p>
 <p><img alt="BackBee Installer - step 3" src="http://i.imgur.com/f6ejuwI.png" title="BackBee Installer - step 3" /></p>
@@ -279,6 +281,13 @@ On Unix/Linux based OS, you can add it into <code>/etc/hosts</code> file. In our
 <pre><code>$ ./backbee fake:data:generate --article-limit 20 --category-limit 5
 </code></pre>
 <p>You can choose the number of articles and categories to generate by respectively changing <code>20</code> and <code>5</code>.</p>
+<h2 id="ubuntu-and-phps-sessions">Ubuntu and PHP's sessions</h2>
+<p>If your operating system is Ubuntu, you might meet the following error while PHP is trying to write its sessions:</p>
+<pre><code>SessionHandler::read(): open(/var/lib/php5/sessions/sess_ne8pqe6qshr0hc6sn9nrmhpfc5, O_RDWR) failed: Permission denied (13) in /var/www/html/bb/vendor/symfony/http-foundation/Symfony/Component/HttpFoundation/Session/Storage/Proxy/SessionHandlerProxy.php on line 69
+</code></pre>
+
+<p>This is due to the user which executes PHP. He has not the right to write in the session's storage folder. You can solve this by using the command <code>chmod</code> or changing the session storage folder.</p>
+<p>You can also take a look at <a href="https://github.com/puphpet/puphpet/issues/1195">puphpet/puphpet#1195</a> to learn more about this issue.</p>
                 <hr />
                 <div class="contribution-message">
     <h2>Is something missing?</h2>
