@@ -242,9 +242,14 @@ On Unix/Linux based OS, you can add it into <code>/etc/hosts</code> file. In our
 </code></pre>
 <p>You are ready to start the installation process.</p>
 <h2 id="web-installer">Web Installer</h2>
+<p>First, you have to get the project by using Composer. We highly recommend you to use it. You can also download the zip that embed all dependencies needed by BackBee CMS.</p>
+<h3 id="install-with-composer-recommended">Install with Composer (recommended)</h3>
 <p>Open a command line interface and get BackBee Standard Edition:</p>
 <pre><code>$ composer create-project "backbee/backbee-standard" /path/to/your/folder "~1.1" --no-interaction
 </code></pre>
+<h3 id="install-with-zip-archive">Install with zip archive</h3>
+<p>Download the <a href="http://backbee.com/backbee/backbee-latest.zip">zip archive</a> and extract its contents into <code>/path/to/your/folder</code>. When it is done you are ready for the next step.</p>
+<h3 id="launch-php-server">Launch PHP server</h3>
 <p>From the <code>public</code> directory, launch the builtin server of PHP:</p>
 <pre><code>$ cd /path/to/your/folder/public &amp;&amp; php -S blogbee.dev:8000
 </code></pre>
