@@ -28,19 +28,9 @@ You are ready to start the installation process.
 
 ## Web Installer
 
-First, you have to get the project by using Composer. We highly recommend you to use it. You can also download the zip that embed all dependencies needed by BackBee CMS.
-
-### Install with Composer (recommended)
-
 Open a command line interface and get BackBee Standard Edition:
 
     $ composer create-project "backbee/backbee-standard" /path/to/your/folder "~1.1" --no-interaction
-
-### Install with zip archive
-
-Download the [zip archive](http://backbee.com/backbee/backbee-latest.zip) and extract its contents into `/path/to/your/folder`. When it is done you are ready for the next step.
-
-### Launch PHP server
 
 From the `public` directory, launch the builtin server of PHP:
 
