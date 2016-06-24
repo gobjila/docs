@@ -8,20 +8,22 @@ Here you will find the list of required and optional requirements.
 
 ### Required
 
-Because BackBee CMS is built on top of Symfony components, these elements are required.
+Because BackBee CMS is built on top of Symfony components, these elements 
+(PHP extensions) are required :
 
 * ``JSON`` needs to be enabled
 * ``ctype`` needs to be enabled
 * ``mbstring`` needs to be enabled
-* Your PHP configuration needs to have the date.timezone setting defined
+* ``tokenizer`` needs to be enabled
 
 The minimum version of PHP must be: **PHP 5.4.0**.
 
 ### Optional
 
+* You (may) need to have the date.timezone setting defined in your PHP configuration
 * You (may) need to have the PHP-XML module installed
 * You (may) need to have at least version 2.6.21 of libxml
-* You (may) need to have PHP tokenizer module enabled
+* You (may) need to have the GD module installed
 * You (may) need to have iconv module enabled
 * You (may) need to have POSIX enabled (only on *nix)
 * You (may) need to have Intl installed with ICU 4+
@@ -41,5 +43,10 @@ session.auto_start = Off
 
 ### Doctrine2 (Database management)
 
-Because we depend on Doctrine 2, you will need to have PDO installed. Additionally, you need to have the PDO driver installed to use your database server.
-Also, you need ``php5-sqlite`` extension to be installed and enabled during the installation process.
+Because we depend on Doctrine 2, you will need to have PDO extension installed.
+Additionally, you need to have the associated PDO driver installed for the database server you want to use.
+
+Also, for Unit Testing, you will need to have ``sqlite3`` and ``pdo_sqlite`` extensions enabled.
+
+
+
